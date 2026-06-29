@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  --color-accent: #199AA6;
+
+  --font-sans: var(--font-pp-neue-montreal);
+  --font-serif: var(--font-pp-writer, Georgia, serif);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --page-padding: 32px;
+  --col-gap: 24px;
+}
+
+html {
+  background-color: #000000;
+  color: #ffffff;
+  scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-pp-neue-montreal), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--col-gap);
+  padding-inline: var(--page-padding);
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  color: #0000EE;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --page-padding: 24px;
+    --col-gap: 16px;
+  }
+
+  .grid-12 {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
