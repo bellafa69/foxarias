@@ -17,18 +17,17 @@ const columnValue: React.CSSProperties = {
 const columnLink: React.CSSProperties = {
   ...columnValue,
   display: 'block',
-  color: '#ffffff',
-  textDecoration: 'none',
+  color: 'var(--site-fg)',
 }
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: '#000000', color: '#ffffff' }}>
+    <footer style={{ backgroundColor: 'var(--site-bg)', color: 'var(--site-fg)' }}>
       {/* Large empty block before the heading */}
       <div style={{ height: '500px' }} />
 
       {/* Big bold heading */}
-      <div style={{ paddingInline: '32px', paddingBottom: '80px' }}>
+      <div style={{ paddingInline: 'var(--page-padding)', paddingBottom: '80px' }}>
         <p style={{
           fontSize: '48px',
           lineHeight: '56px',
@@ -38,8 +37,8 @@ export default function Footer() {
         }}>
           Get in touch. /{' '}
           <a
-            href="mailto:hello@foxarias.com"
-            style={{ color: '#ffffff', textDecoration: 'underline', textUnderlineOffset: '4px' }}
+            href="mailto:bellaarias@gmail.com"
+            style={{ color: 'var(--site-fg)', textDecoration: 'underline', textUnderlineOffset: '4px' }}
           >
             Write me.
           </a>
@@ -52,7 +51,7 @@ export default function Footer() {
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '32px',
-          paddingInline: '32px',
+          paddingInline: 'var(--page-padding)',
           paddingBottom: '120px',
           maxWidth: '720px',
         }}
@@ -65,13 +64,13 @@ export default function Footer() {
 
         <div>
           <div style={columnLabel}>Contact;</div>
-          <a href="mailto:hello@foxarias.com" style={columnLink}>hello@foxarias.com</a>
+          <a href="mailto:bellaarias@gmail.com" style={columnLink}>bellaarias@gmail.com</a>
         </div>
 
         <div>
           <div style={columnLabel}>Social;</div>
-          <a href="#" style={columnLink}>LinkedIn</a>
-          <a href="#" style={columnLink}>Instagram</a>
+          <a href="https://www.linkedin.com/in/isabella-fox-arias-20b1a0145/" target="_blank" rel="noopener noreferrer" style={columnLink}>LinkedIn</a>
+          <a href="https://www.instagram.com/bellafoxarias/" target="_blank" rel="noopener noreferrer" style={columnLink}>Instagram</a>
         </div>
       </div>
     </footer>

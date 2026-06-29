@@ -61,40 +61,37 @@ export default function Slideshow({ revealed = true }: Props) {
   const nextIndex = (index + 1) % SLIDES.length
 
   return (
-    <div style={{
-      height: 'calc(100vh - 48px)',
-      display: 'flex',
-      flexDirection: 'column',
-    }}>
+    <div
+      className="slideshow-outer"
+      style={{ display: 'flex', flexDirection: 'column' }}
+    >
       {/* Caption strip */}
       {revealed && (
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-end',
-          padding: '0 32px 12px',
-          backgroundColor: '#000000',
+          padding: '0 var(--page-padding) 12px',
+          backgroundColor: 'var(--site-bg)',
         }}>
-          <span style={{ ...labelBase, color: '#ffffff' }}>
+          <span style={{ ...labelBase, color: 'var(--site-fg)' }}>
             {SLIDES[index].name}
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ ...labelBase, color: '#ffffff', opacity: 0.5 }}>← →</span>
-            <span style={{ ...labelBase, color: '#ffffff' }}>
+            <span style={{ ...labelBase, color: 'var(--site-fg)', opacity: 0.5 }}>← →</span>
+            <span style={{ ...labelBase, color: 'var(--site-fg)' }}>
               {index + 1} — {SLIDES.length}
             </span>
           </span>
         </div>
       )}
 
-      {/* Image area keeps its own black background */}
-      <div style={{
-        flex: 1,
-        padding: '0 32px',
-        backgroundColor: '#000000',
-        minHeight: 0,
-      }}>
-        <div style={{ position: 'relative', height: '100%', overflow: 'hidden', borderRadius: '8px' }}>
+      {/* Image area background matches the page so mobile color-flip works */}
+      <div
+        className="slideshow-image-area"
+        style={{ padding: '0 var(--page-padding)', backgroundColor: 'var(--site-bg)' }}
+      >
+        <div className="slideshow-image-inner" style={{ overflow: 'hidden', borderRadius: '8px' }}>
           {/* Only the active slide is visible; the next one is mounted just
               ahead of its turn so the swap doesn't show a loading flash —
               the other 6 slides aren't loaded at all until their turn comes. */}

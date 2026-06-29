@@ -20,14 +20,12 @@ const colText: React.CSSProperties = {
 export default function InfoSection() {
   return (
     <div
+      className="info-desktop-only"
       style={{
         backgroundColor: '#000000',
         paddingInline: '32px',
         paddingTop: '16px',
         paddingBottom: '40px',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(12, 1fr)',
-        columnGap: '24px',
       }}
     >
       {/* Contact — cols 7–8 */}
@@ -43,15 +41,15 @@ export default function InfoSection() {
           </div>
           <div>
             <a
-              href="mailto:hello@foxarias.com"
-              style={{ ...colText, color: '#ffffff', textDecoration: 'none', display: 'block', paddingTop: '8px', paddingBottom: '8px' }}
+              href="mailto:bellaarias@gmail.com"
+              style={{ ...colText, color: '#ffffff', display: 'block', paddingTop: '8px', paddingBottom: '8px' }}
             >
-              hello@foxarias.com
+              bellaarias@gmail.com
             </a>
-            <a href="#" style={{ ...colText, color: '#ffffff', textDecoration: 'none', display: 'block' }}>
+            <a href="#" style={{ ...colText, color: '#ffffff', display: 'block' }}>
               LinkedIn
             </a>
-            <a href="#" style={{ ...colText, color: '#ffffff', textDecoration: 'none', display: 'block' }}>
+            <a href="#" style={{ ...colText, color: '#ffffff', display: 'block' }}>
               Instagram
             </a>
           </div>

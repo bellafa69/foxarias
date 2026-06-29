@@ -72,8 +72,8 @@ const bigTitleText: React.CSSProperties = {
   letterSpacing: '-0.02em', cursor: 'default',
 }
 
-const INACTIVE_TEXT_COLOR = 'rgba(255, 255, 255, 0.5)'
-const ACTIVE_TEXT_COLOR = '#ffffff'
+const INACTIVE_TEXT_COLOR = 'var(--site-fg-muted)'
+const ACTIVE_TEXT_COLOR = 'var(--site-fg)'
 const ACTIVE_VIEWPORT_RATIO = 0.25
 
 const viewProjectPill: React.CSSProperties = {
@@ -167,7 +167,7 @@ export default function CaseStudyLarge({
       style={{ paddingInline: 'var(--page-padding)', position: heroImages ? 'relative' : undefined }}
     >
       {/* Number + title — one larger, more prominent element */}
-      <div style={{ marginBottom: heroImages ? '14px' : '12px', display: 'flex', alignItems: 'baseline' }}>
+      <div className="cs-title-row" style={{ marginBottom: heroImages ? '14px' : '12px' }}>
         <span style={{ ...bigTitleText, color: textColor, transition: 'color 0.4s ease', marginRight: '20px' }}>
           {String(number).padStart(2, '0')}
         </span>
@@ -176,6 +176,7 @@ export default function CaseStudyLarge({
         </span>
         {heroImages && infoText && (
           <span
+            className="cs-info-icon"
             onMouseEnter={() => setInfoHovered(true)}
             onMouseLeave={() => setInfoHovered(false)}
             style={{
@@ -205,11 +206,7 @@ export default function CaseStudyLarge({
       {/* Metadata — four distinct groups: role, year, type, tags. In the hero
           variant this is permanently muted grey, a fixed secondary register
           rather than toggling with the title's active/inactive color. */}
-      <div style={{
-        display: 'flex',
-        gap: '32px',
-        paddingBottom: '32px',
-      }}>
+      <div className="cs-metadata-row" style={{ paddingBottom: '32px' }}>
         <span style={{ ...metaText, color: heroImages ? INACTIVE_TEXT_COLOR : textColor, transition: 'color 0.4s ease' }}>{role}</span>
         <span style={{ ...metaText, color: heroImages ? INACTIVE_TEXT_COLOR : textColor, transition: 'color 0.4s ease' }}>{year}</span>
         <span style={{ ...metaText, color: heroImages ? INACTIVE_TEXT_COLOR : textColor, transition: 'color 0.4s ease' }}>{type}</span>
@@ -221,7 +218,7 @@ export default function CaseStudyLarge({
       {writingItems && (
         <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {writingItems.map((item, i) => (
-            <li key={i} style={{ ...bigTitleText, color: '#ffffff' }}>
+            <li key={i} className="cs-writing-item" style={{ ...bigTitleText, color: 'var(--site-fg)' }}>
               <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: '#0000EE', textDecoration: 'none' }} onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')} onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}>
                 &ldquo;{item.title}&rdquo;
               </a>
@@ -229,7 +226,7 @@ export default function CaseStudyLarge({
             </li>
           ))}
           {writingItems.some(item => item.plusMore) && (
-            <li style={{ ...bigTitleText, color: INACTIVE_TEXT_COLOR, marginTop: '24px' }}>+ More</li>
+            <li className="cs-writing-more" style={{ ...bigTitleText, color: INACTIVE_TEXT_COLOR, marginTop: '24px' }}>+ More</li>
           )}
         </ul>
       )}
@@ -237,12 +234,14 @@ export default function CaseStudyLarge({
       {/* Three images, staggered heights, mixing horizontal/vertical orientation per
           project for visual rhythm. flexShrink keeps them in one row at any width. */}
       {!writingItems && (
-      <div style={{
-        display: 'flex',
-        alignItems: heroImages ? 'flex-start' : 'flex-end',
-        gap: heroImages ? '16px' : '24px',
-        position: heroImages ? 'relative' : undefined,
-      }}>
+      <div
+        className={`cs-image-row ${images.length === 1 ? 'cs-image-row-single' : 'cs-image-row-multi'}`}
+        style={{
+          alignItems: heroImages ? 'flex-start' : 'flex-end',
+          gap: heroImages ? '16px' : '24px',
+          position: heroImages ? 'relative' : undefined,
+        }}
+      >
         {/* Scrim — only covers the image row's own bounding box, so the info
             overlay text needs no darkening where it's over plain black background */}
         {heroImages && (
@@ -270,6 +269,7 @@ export default function CaseStudyLarge({
             return (
               <div
                 key={i}
+                className="cs-image-slot"
                 onMouseEnter={() => setHoveredImg(i)}
                 onMouseLeave={() => setHoveredImg(null)}
                 onMouseMove={handleImageMouseMove}
@@ -399,7 +399,7 @@ export default function CaseStudyLarge({
                 {isImgHovered && (
                   <div
                     style={{
-                      ...(comingSoon ? cursorPillComingSoon : cursorPill),
+                      ...cursorPillComingSoon,
                       position: 'absolute',
                       left: `${mousePos.x}%`,
                       top: `${mousePos.y}%`,
@@ -407,7 +407,7 @@ export default function CaseStudyLarge({
                       pointerEvents: 'none',
                     }}
                   >
-                    {comingSoon ? 'Coming soon' : 'View project'}
+                    Coming soon
                   </div>
                 )}
               </div>
@@ -417,6 +417,7 @@ export default function CaseStudyLarge({
           return (
             <div
               key={i}
+              className="cs-image-slot"
               onMouseEnter={() => setHoveredImg(i)}
               onMouseLeave={() => setHoveredImg(null)}
               style={{
@@ -452,7 +453,7 @@ export default function CaseStudyLarge({
                   pointerEvents: 'none',
                 }}
               >
-                <span style={viewProjectPill}>View project</span>
+                <span style={viewProjectPill}>Coming soon</span>
               </div>
             </div>
           )

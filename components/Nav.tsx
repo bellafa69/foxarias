@@ -11,6 +11,11 @@ const SKILLS = [
   'Copywriting', 'Prototyping', 'Editorial Design', 'Content Strategy',
 ]
 
+const MOBILE_SKILLS = [
+  'Product Design', 'UX/UI Design', 'Design Systems',
+  'Product Strategy', 'Brand Strategy', 'Art Direction',
+]
+
 const UP_TO = [
   { label: "What I'm reading",  value: 'Babel by R.F. Kuang'         },
   { label: "What I'm painting", value: 'The Heroines Journey'         },
@@ -27,9 +32,10 @@ type Col = 'contact' | 'skills' | 'upTo'
 export default function Nav({ infoInView = true, revealed = true }: Props) {
   const [tagline, setTagline] = useState('')
   const [activeCol, setActiveCol] = useState<Col | null>(null)
+  const [mobileScrolled, setMobileScrolled] = useState(false)
 
-  const navColor = '#ffffff'
-  const navItemInactiveColor = 'rgba(255, 255, 255, 0.5)'
+  const navColor = 'var(--site-fg)'
+  const navItemInactiveColor = 'var(--site-fg-muted)'
 
   const navText: React.CSSProperties = {
     fontSize: '16px', lineHeight: '20px', fontWeight: 500,
@@ -50,6 +56,11 @@ export default function Nav({ infoInView = true, revealed = true }: Props) {
     position: 'absolute', top: '48px', left: 0, width: '100%', padding: '12px 0',
   }
 
+  const mobileText: React.CSSProperties = {
+    fontSize: '12px', lineHeight: '16px', fontWeight: 500,
+    color: 'var(--site-fg)',
+  }
+
   useEffect(() => {
     let i = 0
     const interval = setInterval(() => {
@@ -64,6 +75,14 @@ export default function Nav({ infoInView = true, revealed = true }: Props) {
     if (infoInView) setActiveCol(null)
   }, [infoInView])
 
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY > 0) setMobileScrolled(true)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   const enter = (col: Col) => { if (!infoInView) setActiveCol(col) }
   const leave = () => setActiveCol(null)
 
@@ -72,131 +91,191 @@ export default function Nav({ infoInView = true, revealed = true }: Props) {
   }
 
   return (
-    <header
-      style={{
-        position: 'sticky', top: 0, height: '48px',
-        display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)',
-        columnGap: '24px', alignItems: 'center', paddingInline: 'var(--page-padding)',
-        zIndex: 50,
-      }}
-    >
-      {/* Logo + typewriter tagline — cols 1–6 */}
-      <div style={{ gridColumn: '1 / 7', display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <span style={{ ...navText, fontWeight: 700, letterSpacing: '-0.02em' }}>FOX ARIAS</span>
-        <span style={navText}>{tagline}</span>
+    <>
+      {/* ── Desktop nav: sticky 12-column header ── */}
+      <header
+        className={`nav-desktop-header${mobileScrolled ? ' nav-mobile-hidden' : ''}`}
+      >
+        {/* Logo + typewriter tagline — cols 1–6 */}
+        <div style={{ gridColumn: '1 / 7', display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <span style={{ ...navText, fontWeight: 700, letterSpacing: '-0.02em' }}>FOX ARIAS</span>
+          <span style={navText}>{tagline}</span>
+        </div>
+
+        {revealed && (
+          <>
+            {/* (CONTACT) — cols 7–8 */}
+            <div
+              style={{ gridColumn: '7 / 9', ...colWrap }}
+              onMouseEnter={() => enter('contact')}
+              onMouseLeave={leave}
+            >
+              <span style={{
+                ...smallText,
+                color: activeCol === 'contact' ? navColor : navItemInactiveColor,
+                textDecoration: activeCol === 'contact' ? 'underline' : 'none',
+                textUnderlineOffset: '3px',
+              }}>
+                (CONTACT)
+              </span>
+              <AnimatePresence>
+                {activeCol === 'contact' && (
+                  <motion.div
+                    key="contact-drop"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.12 }}
+                    style={dropPanel}
+                  >
+                    <div style={dropText}>Between Barcelona, ES</div>
+                    <div style={dropText}>and Brooklyn, New York.</div>
+                    <div style={{ height: '28px' }} />
+                    <div style={dropText}>For Projects, Jobs,</div>
+                    <div style={dropText}>or to talk about books:</div>
+                    <div style={{ height: '28px' }} />
+                    <a href="mailto:bellaarias@gmail.com" style={{ ...dropText, display: 'block' }}>
+                      bellaarias@gmail.com
+                    </a>
+                    <a href="#" style={{ ...dropText, display: 'block' }}>LinkedIn</a>
+                    <a href="#" style={{ ...dropText, display: 'block' }}>Instagram</a>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* (WHAT I CAN DO) — cols 9–10 */}
+            <div
+              style={{ gridColumn: '9 / 11', ...colWrap }}
+              onMouseEnter={() => enter('skills')}
+              onMouseLeave={leave}
+            >
+              <span style={{
+                ...smallText,
+                color: activeCol === 'skills' ? navColor : navItemInactiveColor,
+                textDecoration: activeCol === 'skills' ? 'underline' : 'none',
+                textUnderlineOffset: '3px',
+              }}>
+                (WHAT I CAN DO)
+              </span>
+              <AnimatePresence>
+                {activeCol === 'skills' && (
+                  <motion.div
+                    key="skills-drop"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.12 }}
+                    style={dropPanel}
+                  >
+                    {SKILLS.map(skill => (
+                      <div key={skill} style={dropText}>{skill}</div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* (WHAT I'M UP TO) — cols 11–12 */}
+            <div
+              style={{ gridColumn: '11 / 13', ...colWrap }}
+              onMouseEnter={() => enter('upTo')}
+              onMouseLeave={leave}
+            >
+              <span style={{
+                ...smallText,
+                color: activeCol === 'upTo' ? navColor : navItemInactiveColor,
+                textDecoration: activeCol === 'upTo' ? 'underline' : 'none',
+                textUnderlineOffset: '3px',
+              }}>
+                (WHAT I'M UP TO)
+              </span>
+              <AnimatePresence>
+                {activeCol === 'upTo' && (
+                  <motion.div
+                    key="upTo-drop"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.12 }}
+                    style={dropPanel}
+                  >
+                    {UP_TO.map((item, i) => (
+                      <div key={item.label}>
+                        {i > 0 && <div style={{ height: '28px' }} />}
+                        <div style={{ ...dropText, opacity: 0.5 }}>{item.label}</div>
+                        <div style={dropText}>{item.value}</div>
+                      </div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </>
+        )}
+      </header>
+
+      {/* ── Mobile nav: vertical stacked block ── */}
+      <div
+        className="nav-mobile-stack"
+        style={{
+          paddingInline: 'var(--page-padding)',
+          paddingTop: '16px',
+          paddingBottom: '32px',
+          backgroundColor: 'var(--site-bg)',
+          color: 'var(--site-fg)',
+        }}
+      >
+        {/* 1. Logo */}
+        <div style={{ fontSize: '16px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)', marginBottom: '4px' }}>
+          FOX ARIAS
+        </div>
+        {/* 2. Tagline */}
+        <div style={{ fontSize: '16px', fontWeight: 500, color: 'var(--site-fg)', marginBottom: '32px' }}>
+          {tagline}
+        </div>
+
+        {revealed && (
+          <>
+            {/* 3. Contact */}
+            <div style={{ marginBottom: '28px' }}>
+              <div style={mobileText}>Between Barcelona, ES</div>
+              <div style={mobileText}>and Brooklyn, New York.</div>
+              <div style={{ height: '16px' }} />
+              <div style={mobileText}>For Projects, Jobs,</div>
+              <div style={mobileText}>or to talk about books:</div>
+              <div style={{ height: '16px' }} />
+              <a href="mailto:bellaarias@gmail.com" style={{ ...mobileText, display: 'block' }}>
+                bellaarias@gmail.com
+              </a>
+              <a
+                href="https://www.linkedin.com/in/isabella-fox-arias-20b1a0145/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ ...mobileText, display: 'block' }}
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://www.instagram.com/bellafoxarias/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ ...mobileText, display: 'block' }}
+              >
+                Instagram
+              </a>
+            </div>
+
+            {/* 4. Skills — 6 items only on mobile */}
+            <div>
+              {MOBILE_SKILLS.map(skill => (
+                <div key={skill} style={mobileText}>{skill}</div>
+              ))}
+            </div>
+            {/* 5. WHAT I'M UP TO is intentionally omitted on mobile */}
+          </>
+        )}
       </div>
-
-      {revealed && (
-        <>
-          {/* (CONTACT) — cols 7–8 */}
-          <div
-            style={{ gridColumn: '7 / 9', ...colWrap }}
-            onMouseEnter={() => enter('contact')}
-            onMouseLeave={leave}
-          >
-            <span style={{
-              ...smallText,
-              color: activeCol === 'contact' ? navColor : navItemInactiveColor,
-              textDecoration: activeCol === 'contact' ? 'underline' : 'none',
-              textUnderlineOffset: '3px',
-            }}>
-              (CONTACT)
-            </span>
-            <AnimatePresence>
-              {activeCol === 'contact' && (
-                <motion.div
-                  key="contact-drop"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.12 }}
-                  style={dropPanel}
-                >
-                  <div style={dropText}>Between Barcelona, ES</div>
-                  <div style={dropText}>and Brooklyn, New York.</div>
-                  <div style={{ height: '28px' }} />
-                  <div style={dropText}>For Projects, Jobs,</div>
-                  <div style={dropText}>or to talk about books:</div>
-                  <div style={{ height: '28px' }} />
-                  <a href="mailto:hello@foxarias.com" style={{ ...dropText, display: 'block', textDecoration: 'none' }}>
-                    hello@foxarias.com
-                  </a>
-                  <a href="#" style={{ ...dropText, display: 'block', textDecoration: 'none' }}>LinkedIn</a>
-                  <a href="#" style={{ ...dropText, display: 'block', textDecoration: 'none' }}>Instagram</a>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* (WHAT I CAN DO) — cols 9–10 */}
-          <div
-            style={{ gridColumn: '9 / 11', ...colWrap }}
-            onMouseEnter={() => enter('skills')}
-            onMouseLeave={leave}
-          >
-            <span style={{
-              ...smallText,
-              color: activeCol === 'skills' ? navColor : navItemInactiveColor,
-              textDecoration: activeCol === 'skills' ? 'underline' : 'none',
-              textUnderlineOffset: '3px',
-            }}>
-              (WHAT I CAN DO)
-            </span>
-            <AnimatePresence>
-              {activeCol === 'skills' && (
-                <motion.div
-                  key="skills-drop"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.12 }}
-                  style={dropPanel}
-                >
-                  {SKILLS.map(skill => (
-                    <div key={skill} style={dropText}>{skill}</div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* (WHAT I'M UP TO) — cols 11–12 */}
-          <div
-            style={{ gridColumn: '11 / 13', ...colWrap }}
-            onMouseEnter={() => enter('upTo')}
-            onMouseLeave={leave}
-          >
-            <span style={{
-              ...smallText,
-              color: activeCol === 'upTo' ? navColor : navItemInactiveColor,
-              textDecoration: activeCol === 'upTo' ? 'underline' : 'none',
-              textUnderlineOffset: '3px',
-            }}>
-              (WHAT I'M UP TO)
-            </span>
-            <AnimatePresence>
-              {activeCol === 'upTo' && (
-                <motion.div
-                  key="upTo-drop"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.12 }}
-                  style={dropPanel}
-                >
-                  {UP_TO.map((item, i) => (
-                    <div key={item.label}>
-                      {i > 0 && <div style={{ height: '28px' }} />}
-                      <div style={{ ...dropText, opacity: 0.5 }}>{item.label}</div>
-                      <div style={dropText}>{item.value}</div>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </>
-      )}
-    </header>
+    </>
   )
 }

@@ -51,7 +51,7 @@ export default function Header() {
         </div>
 
         <div style={{ ...col }}>
-          <BlockLink href="mailto:hello@foxarias.com">hello@foxarias.com</BlockLink>
+          <BlockLink href="mailto:bellaarias@gmail.com">bellaarias@gmail.com</BlockLink>
         </div>
 
         <div style={{ ...col }}>

@@ -49,7 +49,7 @@ function PanelContent({ activeMenu }: { activeMenu: MenuSection }) {
         <div style={{ height: '24px' }} />
         <p style={contentText}>Between Barcelona, ES and Brooklyn, New York.</p>
         <p style={contentText}>
-          {'For Projects, Jobs, or to talk about books: hello@foxarias.com'}
+          {'For Projects, Jobs, or to talk about books: bellaarias@gmail.com'}
         </p>
         <p style={{ ...contentText, marginTop: '4px' }}>
           <a href="#" style={{ color: '#ffffff' }}>LinkedIn</a>
@@ -145,7 +145,7 @@ export default function MenuOverlay({ activeMenu, onMenuClick }: Props) {
             </div>
 
             <button onClick={() => onMenuClick(null)} style={{ ...navText, marginLeft: '24px' }}>
-              hello@foxarias.com
+              bellaarias@gmail.com
             </button>
           </header>
 

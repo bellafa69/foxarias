@@ -42,6 +42,7 @@ export default function Home() {
         <InfoSection />
       </motion.div>
       <motion.div
+        className="slideshow-motion-wrapper"
         initial={{ marginTop: 0 }}
         animate={{ marginTop: revealed ? '80px' : 0 }}
         transition={{ duration: 1, ease: 'easeInOut' }}

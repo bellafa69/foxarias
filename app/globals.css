@@ -12,11 +12,15 @@
 :root {
   --page-padding: 32px;
   --col-gap: 24px;
+  /* Site-wide color tokens — flip in the mobile media query below */
+  --site-bg: #000000;
+  --site-fg: #ffffff;
+  --site-fg-muted: rgba(255, 255, 255, 0.5);
 }
 
 html {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--site-bg);
+  color: var(--site-fg);
   scroll-behavior: smooth;
   overflow-x: clip;
 }
@@ -38,10 +42,12 @@ body {
 
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 a:hover {
   color: #0000EE;
+  text-decoration: underline;
 }
 
 @keyframes cursorBlink {
@@ -54,13 +60,139 @@ a:hover {
   50% { opacity: 0.4; transform: scale(0.75); }
 }
 
-@media (max-width: 767px) {
+/* ── Nav layout ──────────────────────────────────────────────────────────── */
+.nav-desktop-header {
+  position: sticky;
+  top: 0;
+  height: 48px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 24px;
+  align-items: center;
+  padding-inline: var(--page-padding);
+  z-index: 50;
+}
+/* Mobile stack hidden on desktop */
+.nav-mobile-stack { display: none; }
+
+/* InfoSection: desktop 12-col grid; hidden on mobile via media query below */
+.info-desktop-only {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 24px;
+}
+
+/* ── Case study layout ───────────────────────────────────────────────────── */
+.cs-sections-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 160px;
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+.cs-title-row {
+  display: flex;
+  align-items: baseline;
+}
+.cs-image-row {
+  display: flex;
+}
+.cs-metadata-row {
+  display: flex;
+  gap: 32px;
+}
+
+/* ── Slideshow layout ────────────────────────────────────────────────────── */
+.slideshow-outer       { height: calc(100vh - 48px); }
+.slideshow-image-area  { flex: 1; min-height: 0; }
+.slideshow-image-inner { position: relative; height: 100%; }
+
+/* ── Mobile/tablet — 1024px breakpoint ──────────────────────────────────── */
+@media (max-width: 1024px) {
   :root {
-    --page-padding: 24px;
+    --page-padding: 16px;
     --col-gap: 16px;
+    /* Color scheme flip: white background, black text */
+    --site-bg: #ffffff;
+    --site-fg: #000000;
+    --site-fg-muted: rgba(0, 0, 0, 0.5);
   }
 
   .grid-12 {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Nav: swap desktop header for mobile vertical stack */
+  .nav-desktop-header { display: none; }
+  .nav-mobile-stack   { display: block; }
+
+  /* InfoSection: hidden on mobile — content lives in nav-mobile-stack */
+  .info-desktop-only  { display: none; }
+
+  /* Fix 1: collapse the Framer Motion marginTop between nav and slideshow */
+  .slideshow-motion-wrapper { margin-top: 0 !important; }
+
+  /* Fix 2 / Fix 3: case study section spacing on mobile/tablet */
+  .cs-sections-wrapper {
+    gap: 64px;
+    padding-top: 200px;
+    padding-bottom: 64px;
+  }
+
+  /* Fix 3: stack number + title, hide info icon, shrink title 25% */
+  .cs-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cs-title-row span {
+    font-size: 36px !important;
+    line-height: 42px !important;
+  }
+  .cs-info-icon { display: none !important; }
+
+  /* Fix 4: image swipe — multi = 85% peek, single = full width */
+  .cs-image-row {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .cs-image-row::-webkit-scrollbar { display: none; }
+  .cs-image-slot { scroll-snap-align: start; }
+  .cs-image-row-multi .cs-image-slot { flex: 0 0 85% !important; }
+  .cs-image-row-single .cs-image-slot { flex: 0 0 100% !important; }
+
+  /* Fix 5: writing list items — shrink from 48px to 12px on mobile */
+  .cs-writing-item {
+    font-size: 12px !important;
+    line-height: 16px !important;
+    letter-spacing: 0 !important;
+  }
+  .cs-writing-more {
+    font-size: 12px !important;
+    line-height: 16px !important;
+    letter-spacing: 0 !important;
+    margin-top: 12px !important;
+  }
+
+  /* Case study metadata: stack vertically on mobile */
+  .cs-metadata-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Slideshow: let image aspect ratio drive height instead of viewport */
+  .slideshow-outer      { height: auto; }
+  .slideshow-image-area { flex: none; min-height: auto; }
+  .slideshow-image-inner {
+    height: auto;
+    aspect-ratio: 2 / 1; /* source images are 4500×2250 */
+  }
+
+  /* Nav: hide once the user has started scrolling */
+  .nav-mobile-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
   }
 }
