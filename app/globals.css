@@ -195,4 +195,13 @@ a:hover {
     pointer-events: none;
     transition: opacity 0.15s ease;
   }
+
+  /* FCC case study detail page: 12-col grid collapses to a single full-width
+     column, and each 3-col-wide text block stacks to fill it */
+  .fcc-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .fcc-col-item {
+    grid-column: 1 / -1 !important;
+  }
 }

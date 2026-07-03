@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import Link from 'next/link'
 
 const TAGLINE = 'Isabella Fox Arias is a designer and art director.'
 
@@ -25,12 +26,15 @@ const UP_TO = [
 interface Props {
   infoInView?: boolean
   revealed?: boolean
+  // Set false on pages reached by navigation (rather than the homepage's
+  // initial load) so the tagline doesn't type out again.
+  animateTagline?: boolean
 }
 
 type Col = 'contact' | 'skills' | 'upTo'
 
-export default function Nav({ infoInView = true, revealed = true }: Props) {
-  const [tagline, setTagline] = useState('')
+export default function Nav({ infoInView = true, revealed = true, animateTagline = true }: Props) {
+  const [tagline, setTagline] = useState(animateTagline ? '' : TAGLINE)
   const [activeCol, setActiveCol] = useState<Col | null>(null)
   const [mobileScrolled, setMobileScrolled] = useState(false)
 
@@ -62,6 +66,8 @@ export default function Nav({ infoInView = true, revealed = true }: Props) {
   }
 
   useEffect(() => {
+    if (!animateTagline) return
+
     let i = 0
     const interval = setInterval(() => {
       i++
@@ -69,7 +75,7 @@ export default function Nav({ infoInView = true, revealed = true }: Props) {
       if (i >= TAGLINE.length) clearInterval(interval)
     }, 60)
     return () => clearInterval(interval)
-  }, [])
+  }, [animateTagline])
 
   useEffect(() => {
     if (infoInView) setActiveCol(null)
@@ -98,7 +104,7 @@ export default function Nav({ infoInView = true, revealed = true }: Props) {
       >
         {/* Logo + typewriter tagline — cols 1–6 */}
         <div style={{ gridColumn: '1 / 7', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span style={{ ...navText, fontWeight: 700, letterSpacing: '-0.02em' }}>FOX ARIAS</span>
+          <Link href="/" style={{ ...navText, fontWeight: 700, letterSpacing: '-0.02em' }}>FOX ARIAS</Link>
           <span style={navText}>{tagline}</span>
         </div>
 
@@ -227,9 +233,9 @@ export default function Nav({ infoInView = true, revealed = true }: Props) {
         }}
       >
         {/* 1. Logo */}
-        <div style={{ fontSize: '16px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)', marginBottom: '4px' }}>
+        <Link href="/" style={{ display: 'block', fontSize: '16px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)', marginBottom: '4px' }}>
           FOX ARIAS
-        </div>
+        </Link>
         {/* 2. Tagline */}
         <div style={{ fontSize: '16px', fontWeight: 500, color: 'var(--site-fg)', marginBottom: '32px' }}>
           {tagline}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export interface LargeImage {
   src: string
@@ -20,6 +21,14 @@ export interface LargeImage {
   // heroImages only. Disables the scale(1.20) on hover while keeping the
   // cursor pill — useful when the hover enlarge doesn't suit the slot's content.
   noHoverScale?: boolean
+  // heroImages only. Disables all hover interaction for this slot — no
+  // scale, no cursor pill, normal cursor. Use for images with nothing to
+  // link to yet, where even a "Coming soon" pill isn't wanted.
+  noHover?: boolean
+  // heroImages only. Slightly bumps up the cursor-follow pill's size (font +
+  // padding) while keeping the exact same mouse-tracking behavior as the
+  // default pill.
+  largePill?: boolean
   // heroImages only. Uses the inset-wrapper + objectFit:contain sizing for the
   // foreground layer (80px top/bottom, 1/6 left/right) instead of width:90%
   // centered. Use for single-slot layouts where the image would overflow at 90%.
@@ -58,6 +67,9 @@ export interface CaseStudyLargeProps {
   comingSoon?: boolean
   // When provided, renders a text-only article list instead of images.
   writingItems?: WritingItem[]
+  // heroImages only. When set, the whole image row links to the live case
+  // study page — the existing "Coming soon" hover pill becomes clickable.
+  href?: string
 }
 
 const metaText: React.CSSProperties = {
@@ -69,6 +81,13 @@ const metaText: React.CSSProperties = {
 // existing case study sections so this reads as the dominant element.
 const bigTitleText: React.CSSProperties = {
   fontSize: '48px', lineHeight: '56px', fontWeight: 500,
+  letterSpacing: '-0.02em', cursor: 'default',
+}
+
+// Writing list items — 50% of bigTitleText's scale, since a full-size 48px
+// listing read as too heavy for a plain text article list.
+const writingItemText: React.CSSProperties = {
+  fontSize: '24px', lineHeight: '28px', fontWeight: 500,
   letterSpacing: '-0.02em', cursor: 'default',
 }
 
@@ -100,7 +119,16 @@ const cursorPill: React.CSSProperties = {
   whiteSpace: 'nowrap',
 }
 
-// Same shape as cursorPill, inverted — used when comingSoon is set.
+// Slightly larger cursor-follow pill — same mouse-tracking behavior as
+// cursorPill, just a bit more legible.
+const cursorPillLarge: React.CSSProperties = {
+  ...cursorPill,
+  fontSize: '13px',
+  padding: '9px 16px',
+}
+
+// Same shape and size as cursorPill, just inverted — used for sections with
+// no live case study page yet (Sentri, Solo.ai).
 const cursorPillComingSoon: React.CSSProperties = {
   ...cursorPill,
   color: '#000000',
@@ -108,7 +136,7 @@ const cursorPillComingSoon: React.CSSProperties = {
 }
 
 export default function CaseStudyLarge({
-  number, title, role, year, type, tags, status, images = [], heroImages = false, infoText, comingSoon = false, writingItems,
+  number, title, role, year, type, tags, status, images = [], heroImages = false, infoText, comingSoon = false, writingItems, href,
 }: CaseStudyLargeProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const [scrollActive, setScrollActive] = useState(false)
@@ -218,7 +246,7 @@ export default function CaseStudyLarge({
       {writingItems && (
         <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {writingItems.map((item, i) => (
-            <li key={i} className="cs-writing-item" style={{ ...bigTitleText, color: 'var(--site-fg)' }}>
+            <li key={i} className="cs-writing-item" style={{ ...writingItemText, color: 'var(--site-fg)' }}>
               <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: '#0000EE', textDecoration: 'none' }} onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')} onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}>
                 &ldquo;{item.title}&rdquo;
               </a>
@@ -226,7 +254,7 @@ export default function CaseStudyLarge({
             </li>
           ))}
           {writingItems.some(item => item.plusMore) && (
-            <li className="cs-writing-more" style={{ ...bigTitleText, color: INACTIVE_TEXT_COLOR, marginTop: '24px' }}>+ More</li>
+            <li className="cs-writing-more" style={{ ...writingItemText, color: INACTIVE_TEXT_COLOR, marginTop: '24px' }}>+ More</li>
           )}
         </ul>
       )}
@@ -257,7 +285,7 @@ export default function CaseStudyLarge({
             }}
           />
         )}
-        {images.slice(0, 3).map(({ src, ratio, height, background, videoSrc, foregroundNode, flex: slotFlex = 1, noHoverScale = false, paddedForeground = false }, i) => {
+        {images.slice(0, 3).map(({ src, ratio, height, background, videoSrc, foregroundNode, flex: slotFlex = 1, noHoverScale = false, noHover = false, largePill = false, paddedForeground = false }, i) => {
           const isImgHovered = hoveredImg === i
           const slotCount = Math.min(images.length, 3)
           // Tell Next.js the actual rendered width so it picks the right srcset entry.
@@ -266,19 +294,18 @@ export default function CaseStudyLarge({
           const fgSizes = slotCount === 1 ? '(max-width: 768px) 100vw, 75vw' : '(max-width: 768px) 100vw, 28vw'
 
           if (heroImages) {
-            return (
+            const slot = (
               <div
-                key={i}
                 className="cs-image-slot"
-                onMouseEnter={() => setHoveredImg(i)}
-                onMouseLeave={() => setHoveredImg(null)}
-                onMouseMove={handleImageMouseMove}
+                onMouseEnter={() => { if (!noHover) setHoveredImg(i) }}
+                onMouseLeave={() => { if (!noHover) setHoveredImg(null) }}
+                onMouseMove={noHover ? undefined : handleImageMouseMove}
                 style={{
                   position: 'relative',
                   flex: slotFlex,
                   minWidth: 0,
                   height: `${height}vh`,
-                  cursor: 'none',
+                  cursor: noHover ? 'default' : 'none',
                   transform: (isImgHovered && !noHoverScale) ? 'scale(1.20)' : 'scale(1)',
                   zIndex: isImgHovered ? 10 : 1,
                   transition: 'transform 0.3s ease',
@@ -395,11 +422,14 @@ export default function CaseStudyLarge({
                   )}
                 </div>
 
-                {/* Custom cursor — follows the mouse in real time while hovered */}
+                {/* Custom cursor — follows the mouse in real time while hovered.
+                    Sections with a live href get the opaque "View project"
+                    pill instead of the inverted "Coming soon" one. largePill
+                    bumps the size while keeping the same cursor-tracking. */}
                 {isImgHovered && (
                   <div
                     style={{
-                      ...cursorPillComingSoon,
+                      ...(href ? (largePill ? cursorPillLarge : cursorPill) : cursorPillComingSoon),
                       position: 'absolute',
                       left: `${mousePos.x}%`,
                       top: `${mousePos.y}%`,
@@ -407,10 +437,18 @@ export default function CaseStudyLarge({
                       pointerEvents: 'none',
                     }}
                   >
-                    Coming soon
+                    {href ? 'View project' : 'Coming soon'}
                   </div>
                 )}
               </div>
+            )
+
+            return href ? (
+              <Link key={i} href={href} style={{ display: 'contents' }}>
+                {slot}
+              </Link>
+            ) : (
+              <div key={i} style={{ display: 'contents' }}>{slot}</div>
             )
           }
 

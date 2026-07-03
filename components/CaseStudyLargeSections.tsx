@@ -16,6 +16,7 @@ const SECTIONS: Omit<CaseStudyLargeProps, 'number'>[] = [
     type: 'Client Work',
     tags: 'Product Design, UX, Design Systems',
     heroImages: true,
+    href: '/work/fcc',
     infoText: "A full-scale redesign for a Fleet management platform.",
     images: [
       { src: fcc('03'), ratio: 3001 / 2228, height: 74, background: fcc('background') },
@@ -30,11 +31,25 @@ const SECTIONS: Omit<CaseStudyLargeProps, 'number'>[] = [
     type: 'In-house',
     tags: 'Product Design, Design Systems, Branding',
     heroImages: true,
+    href: '/work/cadence',
     infoText: 'Managed end-to-end design process for Cadence, an Event management app that required constant feature development, brand iteration, and UX/UI maintenance.',
     images: [
       { src: cadence('01'), ratio: 2213 / 1658, height: 74, background: cadence('Painting') },
       { src: cadence('02'), ratio: 1962 / 2064, height: 80, background: cadence('Painting') },
       { src: cadence('03'), ratio: 2213 / 1658, height: 74, background: cadence('Painting') },
+    ],
+  },
+  {
+    title: 'Tandem Magazine',
+    role: 'Editor + Co-Founder',
+    year: '2025-Present',
+    type: 'Press',
+    tags: 'Editorial, Art Direction, Arts Writing, Cultural Criticism',
+    heroImages: true,
+    href: '/work/tandem',
+    infoText: 'Co-editor and co-founder of Tandem Magazine, an art magazine focusing on a transhistoric perspective for contemporary art.',
+    images: [
+      { src: '', ratio: 16 / 9, height: 74, background: img('Tandem - Case study.png'), videoSrc: '/images/Tandem Video.mp4', noHoverScale: true, largePill: true },
     ],
   },
   {
@@ -48,19 +63,7 @@ const SECTIONS: Omit<CaseStudyLargeProps, 'number'>[] = [
     comingSoon: true,
     infoText: "An app developed for a cutting-edge veterinary tech product.",
     images: [
-      { src: '/images/Sentri/Sentri - 01.png', ratio: 2814 / 2064, height: 74, background: '/images/Sentri/Sentri - Painting.png', paddedForeground: true },
-    ],
-  },
-  {
-    title: 'Tandem Magazine',
-    role: 'Editor + Co-Founder',
-    year: '2025-Present',
-    type: 'Press',
-    tags: 'Editorial, Art Direction, Arts Writing, Cultural Criticism',
-    heroImages: true,
-    infoText: 'Co-editor and co-founder of Tandem Magazine, an art magazine focusing on a transhistoric perspective for contemporary art.',
-    images: [
-      { src: '', ratio: 16 / 9, height: 74, background: img('Tandem - Case study.png'), videoSrc: '/images/Tandem Video.mp4', noHoverScale: true },
+      { src: '/images/Sentri/Sentri - 01.png', ratio: 2814 / 2064, height: 74, background: '/images/Sentri/Sentri - Painting.png', paddedForeground: true, noHoverScale: true },
     ],
   },
   {
