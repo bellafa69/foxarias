@@ -5,9 +5,9 @@ import TypedText from '@/components/TypedText'
 
 const img = (n: string) => `/images/Tandem - Case Study/Tandem - ${n}.png`
 
-// Fixed 40px side padding for this page, independent of the sitewide
+// Fixed 16px side padding for this page, independent of the sitewide
 // --page-padding var (32px desktop / 16px mobile). Matches FCC/Cadence.
-const SIDE_PADDING = '40px'
+const SIDE_PADDING = '16px'
 
 // Every text block is exactly 3 of the 12 grid columns wide, starting at
 // column 4. Matches FCC/Cadence.
@@ -78,8 +78,8 @@ function FullBleedImage({ background, foreground }: { background: string; foregr
 }
 
 // A single image or video with no painting/background layer — full width at
-// its own natural aspect ratio (same 40px side padding as the painting
-// images), rather than cropped or letterboxed into a fixed-height box.
+// its own natural aspect ratio (same side padding as the painting images),
+// rather than cropped or letterboxed into a fixed-height box.
 function FullWidthMedia({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ paddingInline: SIDE_PADDING }}>

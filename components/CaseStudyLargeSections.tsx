@@ -86,6 +86,10 @@ const SECTIONS: Omit<CaseStudyLargeProps, 'number'>[] = [
     year: '2024-Present',
     type: 'Press',
     tags: 'Arts Writing, Cultural Criticism',
+    heroImages: true,
+    images: [
+      { src: img('Writing/Writing - 02.png'), ratio: 3414 / 3576, height: 74, background: img('Writing/Writing - painting.png'), paddedForeground: true, noHover: true },
+    ],
     writingItems: [
       { title: 'How Painter Anthony Cudahy Finds Intimacy in the Mundane', publication: 'Interview Magazine', url: 'https://www.interviewmagazine.com/art/how-painter-anthony-cudahy-finds-intimacy-in-the-mundane' },
       { title: 'For Eimear Walshe, There Are No ‘Goodies or Baddies’', publication: 'OFFICE Magazine', url: 'https://officemagazine.net/eimear-walshe-there-are-no-goodies-or-baddies' },

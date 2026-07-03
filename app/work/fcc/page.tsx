@@ -5,9 +5,9 @@ import TypedText from '@/components/TypedText'
 
 const img = (n: string) => `/images/FCC - Case Study/FCC - CS - ${n}.png`
 
-// Fixed 40px side padding for this page, independent of the sitewide
+// Fixed 16px side padding for this page, independent of the sitewide
 // --page-padding var (32px desktop / 16px mobile).
-const SIDE_PADDING = '40px'
+const SIDE_PADDING = '16px'
 
 // Every text block is exactly 3 of the 12 grid columns wide. Rows place
 // blocks back to back starting at column 4 (col4-6, col7-9, col10-12).

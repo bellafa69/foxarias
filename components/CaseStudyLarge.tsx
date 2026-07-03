@@ -242,26 +242,11 @@ export default function CaseStudyLarge({
         {status && <span style={{ ...metaText, fontStyle: 'italic', textTransform: 'none', color: heroImages ? INACTIVE_TEXT_COLOR : textColor, transition: 'color 0.4s ease' }}>{status}</span>}
       </div>
 
-      {/* Writing items — text-only article list, no images */}
-      {writingItems && (
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {writingItems.map((item, i) => (
-            <li key={i} className="cs-writing-item" style={{ ...writingItemText, color: 'var(--site-fg)' }}>
-              <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: '#0000EE', textDecoration: 'none' }} onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')} onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}>
-                &ldquo;{item.title}&rdquo;
-              </a>
-              {' — '}{item.publication}
-            </li>
-          ))}
-          {writingItems.some(item => item.plusMore) && (
-            <li className="cs-writing-more" style={{ ...writingItemText, color: INACTIVE_TEXT_COLOR, marginTop: '24px' }}>+ More</li>
-          )}
-        </ul>
-      )}
-
       {/* Three images, staggered heights, mixing horizontal/vertical orientation per
-          project for visual rhythm. flexShrink keeps them in one row at any width. */}
-      {!writingItems && (
+          project for visual rhythm. flexShrink keeps them in one row at any width.
+          Renders whenever images are provided, even alongside writingItems below —
+          acts as a header hero image above the article list in that case. */}
+      {images.length > 0 && (
       <div
         className={`cs-image-row ${images.length === 1 ? 'cs-image-row-single' : 'cs-image-row-multi'}`}
         style={{
@@ -497,6 +482,24 @@ export default function CaseStudyLarge({
           )
         })}
       </div>
+      )}
+
+      {/* Writing items — text-only article list, no images. Sits below the
+          header hero image above when both are present. */}
+      {writingItems && (
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, marginTop: images.length > 0 ? '32px' : 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {writingItems.map((item, i) => (
+            <li key={i} className="cs-writing-item" style={{ ...writingItemText, color: 'var(--site-fg)' }}>
+              <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: '#0000EE', textDecoration: 'none' }} onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')} onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}>
+                &ldquo;{item.title}&rdquo;
+              </a>
+              {' — '}{item.publication}
+            </li>
+          ))}
+          {writingItems.some(item => item.plusMore) && (
+            <li className="cs-writing-more" style={{ ...writingItemText, color: INACTIVE_TEXT_COLOR, marginTop: '24px' }}>+ More</li>
+          )}
+        </ul>
       )}
 
       {/* Info-icon overlay — large editorial pull-quote, absolutely positioned so
