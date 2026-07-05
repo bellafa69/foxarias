@@ -4,17 +4,16 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 
-const TAGLINE = 'Isabella Fox Arias is a designer and art director.'
+const TAGLINE = 'Isabella Fox Arias is a designer and producer.'
 
 const SKILLS = [
-  'Product Design', 'UX/UI Design', 'Design Systems', 'Product Strategy',
-  'Brand Strategy', 'Art Direction', 'User Research', 'Web Design',
-  'Copywriting', 'Prototyping', 'Editorial Design', 'Content Strategy',
+  'Art Direction', 'Producer / Project Management', 'Brand Strategy + Design', 'Web Design',
+  'Information Architecture', 'UX/UI Design', 'Content Strategy', 'Editorial Design',
 ]
 
 const MOBILE_SKILLS = [
-  'Product Design', 'UX/UI Design', 'Design Systems',
-  'Product Strategy', 'Brand Strategy', 'Art Direction',
+  'Art Direction', 'Producer / Project Management', 'Brand Strategy + Design',
+  'Web Design', 'Information Architecture', 'UX/UI Design',
 ]
 
 const UP_TO = [
@@ -29,11 +28,15 @@ interface Props {
   // Set false on pages reached by navigation (rather than the homepage's
   // initial load) so the tagline doesn't type out again.
   animateTagline?: boolean
+  // Mobile only. Set false to drop contact + skills from the mobile stack
+  // (logo/tagline still show) — used on case study detail pages, which keep
+  // the desktop nav's contact/skills columns untouched via `revealed`.
+  showMobileMeta?: boolean
 }
 
 type Col = 'contact' | 'skills' | 'upTo'
 
-export default function Nav({ infoInView = true, revealed = true, animateTagline = true }: Props) {
+export default function Nav({ infoInView = true, revealed = true, animateTagline = true, showMobileMeta = true }: Props) {
   const [tagline, setTagline] = useState(animateTagline ? '' : TAGLINE)
   const [activeCol, setActiveCol] = useState<Col | null>(null)
   const [mobileScrolled, setMobileScrolled] = useState(false)
@@ -241,10 +244,10 @@ export default function Nav({ infoInView = true, revealed = true, animateTagline
           {tagline}
         </div>
 
-        {revealed && (
-          <>
+        {revealed && showMobileMeta && (
+          <div style={{ display: 'flex', gap: 'var(--col-gap)' }}>
             {/* 3. Contact */}
-            <div style={{ marginBottom: '28px' }}>
+            <div style={{ flex: 1 }}>
               <div style={mobileText}>Between Barcelona, ES</div>
               <div style={mobileText}>and Brooklyn, New York.</div>
               <div style={{ height: '16px' }} />
@@ -273,13 +276,13 @@ export default function Nav({ infoInView = true, revealed = true, animateTagline
             </div>
 
             {/* 4. Skills — 6 items only on mobile */}
-            <div>
+            <div style={{ flex: 1 }}>
               {MOBILE_SKILLS.map(skill => (
                 <div key={skill} style={mobileText}>{skill}</div>
               ))}
             </div>
             {/* 5. WHAT I'M UP TO is intentionally omitted on mobile */}
-          </>
+          </div>
         )}
       </div>
     </>

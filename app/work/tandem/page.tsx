@@ -67,7 +67,7 @@ function FullBleedImage({ background, foreground }: { background: string; foregr
     <div style={{ paddingInline: SIDE_PADDING }}>
       <div style={{ position: 'relative', height: '80vh', borderRadius: '8px', overflow: 'hidden' }}>
         <Image src={background} alt="" fill sizes="100vw" quality={90} style={{ objectFit: 'cover' }} />
-        <div style={{ position: 'absolute', top: '80px', bottom: '80px', left: 'calc(100% / 6)', right: 'calc(100% / 6)' }}>
+        <div className="cs-foreground-inset" style={{ position: 'absolute', top: '80px', bottom: '80px', left: 'calc(100% / 6)', right: 'calc(100% / 6)' }}>
           <div style={{ position: 'relative', width: '100%', height: '100%' }}>
             <Image src={foreground} alt="" fill sizes="75vw" quality={90} style={{ objectFit: 'contain' }} />
           </div>
@@ -117,8 +117,8 @@ function GridSection({ children }: { children: React.ReactNode }) {
 
 export default function TandemCaseStudyPage() {
   return (
-    <main style={{ backgroundColor: 'var(--site-bg)', color: 'var(--site-fg)' }}>
-      <Nav revealed infoInView={false} animateTagline={false} />
+    <main className="cs-detail-page" style={{ backgroundColor: 'var(--site-bg)', color: 'var(--site-fg)' }}>
+      <Nav revealed infoInView={false} animateTagline={false} showMobileMeta={false} />
 
       {/* Title block — same number+title treatment as the homepage case
           study list. Title, metadata, and quote align to the page edge (not
@@ -136,10 +136,10 @@ export default function TandemCaseStudyPage() {
           <span style={metaText}>Publishing, Art Direction, Editorial</span>
         </div>
 
-        <TypedText style={pullQuoteText} text="Co-editor and co-founder of Tandem Magazine, an art magazine focusing on a transhistoric perspective for contemporary art." />
+        <TypedText className="cs-pull-quote" style={pullQuoteText} text="Co-editor and co-founder of Tandem Magazine, an art magazine focusing on a transhistoric perspective for contemporary art." />
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '120px', paddingBottom: '120px' }}>
+      <div className="cs-detail-sections" style={{ display: 'flex', flexDirection: 'column', gap: '120px', paddingBottom: '120px' }}>
 
         {/* Image 1 */}
         <FullBleedImage

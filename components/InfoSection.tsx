@@ -1,7 +1,6 @@
 const WHAT_I_CAN_DO = [
-  'Product Design', 'UX/UI Design', 'Design Systems', 'Product Strategy',
-  'Brand Strategy', 'Art Direction', 'User Research', 'Web Design',
-  'Copywriting', 'Prototyping', 'Editorial Design', 'Content Strategy',
+  'Art Direction', 'Producer / Project Management', 'Brand Strategy + Design', 'Web Design',
+  'Information Architecture', 'UX/UI Design', 'Content Strategy', 'Editorial Design',
 ]
 
 const WHAT_IM_UP_TO = [

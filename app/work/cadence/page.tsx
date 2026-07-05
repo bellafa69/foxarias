@@ -79,7 +79,7 @@ function FullBleedImage({ background, foreground, caption }: { background: strin
     <div style={{ paddingInline: SIDE_PADDING }}>
       <div style={{ position: 'relative', height: '80vh', borderRadius: '8px', overflow: 'hidden' }}>
         <Image src={background} alt="" fill sizes="100vw" quality={90} style={{ objectFit: 'cover' }} />
-        <div style={{ position: 'absolute', top: '80px', bottom: '80px', left: 'calc(100% / 6)', right: 'calc(100% / 6)' }}>
+        <div className="cs-foreground-inset" style={{ position: 'absolute', top: '80px', bottom: '80px', left: 'calc(100% / 6)', right: 'calc(100% / 6)' }}>
           <div style={{ position: 'relative', width: '100%', height: '100%' }}>
             <Image src={foreground} alt="" fill sizes="75vw" quality={90} style={{ objectFit: 'contain' }} />
           </div>
@@ -119,8 +119,8 @@ function GridSection({ children }: { children: React.ReactNode }) {
 
 export default function CadenceCaseStudyPage() {
   return (
-    <main style={{ backgroundColor: 'var(--site-bg)', color: 'var(--site-fg)' }}>
-      <Nav revealed infoInView={false} animateTagline={false} />
+    <main className="cs-detail-page" style={{ backgroundColor: 'var(--site-bg)', color: 'var(--site-fg)' }}>
+      <Nav revealed infoInView={false} animateTagline={false} showMobileMeta={false} />
 
       {/* Title block — same number+title treatment as the homepage case
           study list. Title, metadata, and quote all align to the hero
@@ -139,10 +139,10 @@ export default function CadenceCaseStudyPage() {
           <span style={metaText}>Product Design, UX, Design Systems</span>
         </div>
 
-        <TypedText style={pullQuoteText} text="Managed end-to-end design process for Cadence, an Event management app that required constant feature development, brand iteration, and UX/UI maintenance." />
+        <TypedText className="cs-pull-quote" style={pullQuoteText} text="Managed end-to-end design process for Cadence, an Event management app that required constant feature development, brand iteration, and UX/UI maintenance." />
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '120px', paddingBottom: '120px' }}>
+      <div className="cs-detail-sections" style={{ display: 'flex', flexDirection: 'column', gap: '120px', paddingBottom: '120px' }}>
 
         {/* Hero image */}
         <FullBleedImage

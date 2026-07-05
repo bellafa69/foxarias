@@ -16,9 +16,8 @@ const MENU_ITEMS: { key: MenuSection; label: string }[] = [
 ]
 
 const SKILLS = [
-  'Product Design', 'UX/UI Design', 'Design Systems', 'Product Strategy',
-  'Brand Strategy', 'Art Direction', 'User Research', 'Web Design',
-  'Copywriting', 'Prototyping', 'Editorial Design', 'Content Strategy',
+  'Art Direction', 'Producer / Project Management', 'Brand Strategy + Design', 'Web Design',
+  'Information Architecture', 'UX/UI Design', 'Content Strategy', 'Editorial Design',
 ]
 
 const contentText: React.CSSProperties = {
@@ -122,7 +121,7 @@ export default function MenuOverlay({ activeMenu, onMenuClick }: Props) {
             </button>
 
             <button onClick={() => onMenuClick(null)} style={{ ...navText, marginLeft: '16px' }}>
-              Isabella Fox Arias is a designer and art director.
+              Isabella Fox Arias is a designer and producer.
             </button>
 
             <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-const FULL_TEXT = 'Isabella Fox Arias is a designer, art director, and editor.'
+const FULL_TEXT = 'Isabella Fox Arias is a designer and producer.'
 const SPEED = 63
 
 function BlinkingCursor() {

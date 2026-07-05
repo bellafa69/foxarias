@@ -7,6 +7,7 @@ import InfoSection from '@/components/InfoSection'
 import Slideshow from '@/components/Slideshow'
 import CaseStudyLargeSections from '@/components/CaseStudyLargeSections'
 import Footer from '@/components/Footer'
+import MobileIntroGate from '@/components/MobileIntroGate'
 
 export default function Home() {
   const [infoInView, setInfoInView] = useState(true)
@@ -31,24 +32,27 @@ export default function Home() {
 
   return (
     <>
-      <Nav infoInView={infoInView} revealed={revealed} />
-      <motion.div
-        ref={infoRef}
-        initial={{ height: 0 }}
-        animate={{ height: revealed ? 'auto' : 0 }}
-        transition={{ duration: 1, ease: 'easeInOut' }}
-        style={{ overflow: 'hidden' }}
-      >
-        <InfoSection />
-      </motion.div>
-      <motion.div
-        className="slideshow-motion-wrapper"
-        initial={{ marginTop: 0 }}
-        animate={{ marginTop: revealed ? '80px' : 0 }}
-        transition={{ duration: 1, ease: 'easeInOut' }}
-      >
-        <Slideshow revealed={revealed} />
-      </motion.div>
+      <MobileIntroGate />
+      <div className="mobile-hero-stack">
+        <Nav infoInView={infoInView} revealed={revealed} />
+        <motion.div
+          ref={infoRef}
+          initial={{ height: 0 }}
+          animate={{ height: revealed ? 'auto' : 0 }}
+          transition={{ duration: 1, ease: 'easeInOut' }}
+          style={{ overflow: 'hidden' }}
+        >
+          <InfoSection />
+        </motion.div>
+        <motion.div
+          className="slideshow-motion-wrapper"
+          initial={{ marginTop: 0 }}
+          animate={{ marginTop: revealed ? '80px' : 0 }}
+          transition={{ duration: 1, ease: 'easeInOut' }}
+        >
+          <Slideshow revealed={revealed} />
+        </motion.div>
+      </div>
       <CaseStudyLargeSections />
       <Footer />
     </>

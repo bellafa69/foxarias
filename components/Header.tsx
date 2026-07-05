@@ -63,18 +63,14 @@ export default function Header() {
       {/* Cols 7–8: What I can do */}
       <div style={{ gridColumn: '7 / span 2', ...col }}>
         {[
-          'Product Design',
-          'UX/UI Design',
-          'Design Systems',
-          'Product Strategy',
-          'Brand Strategy',
           'Art Direction',
-          'User Research',
+          'Producer / Project Management',
+          'Brand Strategy + Design',
           'Web Design',
-          'Copywriting',
-          'Prototyping',
-          'Editorial Design',
+          'Information Architecture',
+          'UX/UI Design',
           'Content Strategy',
+          'Editorial Design',
         ].map((skill) => (
           <span key={skill} style={mono}>{skill}</span>
         ))}

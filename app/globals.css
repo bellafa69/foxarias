@@ -101,6 +101,9 @@ a:hover {
   display: flex;
   gap: 32px;
 }
+/* Mobile-only whole-card tap target (see CaseStudyLarge) — hidden on desktop,
+   where the per-image hover pill + link handles navigation instead. */
+.cs-mobile-tap-overlay { display: none; }
 
 /* ── Slideshow layout ────────────────────────────────────────────────────── */
 .slideshow-outer       { height: calc(100vh - 48px); }
@@ -129,8 +132,22 @@ a:hover {
   /* InfoSection: hidden on mobile — content lives in nav-mobile-stack */
   .info-desktop-only  { display: none; }
 
-  /* Fix 1: collapse the Framer Motion marginTop between nav and slideshow */
-  .slideshow-motion-wrapper { margin-top: 0 !important; }
+  /* Above-the-fold hero: nav/tagline/contact/skills at top, slideshow
+     pinned 16px above the bottom of the first viewport via margin-top:auto
+     (falls back to sitting right under the skills block if content ever
+     runs taller than 100vh). */
+  .mobile-hero-stack {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Fix 1: collapse the Framer Motion marginTop between nav and slideshow,
+     then push the slideshow to the bottom of the hero stack instead. */
+  .slideshow-motion-wrapper {
+    margin-top: auto !important;
+    margin-bottom: 16px !important;
+  }
 
   /* Fix 2 / Fix 3: case study section spacing on mobile/tablet */
   .cs-sections-wrapper {
@@ -139,10 +156,10 @@ a:hover {
     padding-bottom: 64px;
   }
 
-  /* Fix 3: stack number + title, hide info icon, shrink title 25% */
+  /* Fix 3: number + title on the same line, hide info icon, shrink title 25% */
   .cs-title-row {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: baseline;
   }
   .cs-title-row span {
     font-size: 36px !important;
@@ -162,6 +179,37 @@ a:hover {
   .cs-image-row-multi .cs-image-slot { flex: 0 0 85% !important; }
   .cs-image-row-single .cs-image-slot { flex: 0 0 100% !important; }
 
+  /* Fix 6: no hover affordances on touch — no scale, no cursor-follow pill.
+     .cs-mobile-tap-overlay (see .cs-mobile-tap-overlay base rule above)
+     becomes the single tap target covering the whole card instead. */
+  .cs-image-slot {
+    transform: none !important;
+    cursor: pointer !important;
+  }
+  .cs-cursor-pill { display: none !important; }
+  .cs-mobile-tap-overlay {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+  }
+
+  /* Fix 7: image height was viewport-driven (74-80vh) and towered over the
+     screen; drive it from aspect-ratio instead (same fix already applied to
+     the slideshow, which has the same vh-jitter problem on mobile browsers).
+     Pair with even insets on the device so its padding matches on every
+     side instead of the 0/5% (or 40px/1-6th) split used on desktop. */
+  .cs-image-slot {
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+  .cs-foreground-inset {
+    top: 10% !important;
+    bottom: 10% !important;
+    left: 10% !important;
+    right: 10% !important;
+  }
+
   /* Fix 5: writing list items — shrink from 48px to 12px on mobile */
   .cs-writing-item {
     font-size: 12px !important;
@@ -175,10 +223,12 @@ a:hover {
     margin-top: 12px !important;
   }
 
-  /* Case study metadata: stack vertically on mobile */
+  /* Case study metadata: side by side on mobile, wrapping to the next
+     line only if it doesn't all fit on one */
   .cs-metadata-row {
-    flex-direction: column;
-    gap: 4px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 16px;
   }
 
   /* Slideshow: let image aspect ratio drive height instead of viewport */
@@ -203,5 +253,35 @@ a:hover {
   }
   .fcc-col-item {
     grid-column: 1 / -1 !important;
+  }
+
+  /* Case study detail pages (FCC/Cadence/Tandem) only — scoped under
+     .cs-detail-page so these don't also resize the homepage case study
+     list, which reuses .cs-title-row/.cs-foreground-inset with its own
+     mobile sizing. Header +25% over its existing 36px mobile size, pull
+     quote -50% off its single 31px desktop-and-mobile size, and section
+     spacing cut from 120px to 60px. */
+  .cs-detail-page .cs-title-row span {
+    font-size: 45px !important;
+    line-height: 52.5px !important;
+  }
+  .cs-detail-page .cs-pull-quote {
+    font-size: 15.5px !important;
+    line-height: 23.5px !important;
+  }
+  .cs-detail-page .cs-detail-sections {
+    gap: 60px !important;
+    padding-bottom: 60px !important;
+  }
+  /* These frames keep their 80vh height (unlike the homepage cards, which
+     were also squared off via aspect-ratio), so their box isn't square —
+     a percentage inset would give unequal absolute padding per side. Use a
+     fixed px value on all four sides instead so top/bottom truly match
+     left/right, overriding the homepage cards' 10%/10% rule for this page. */
+  .cs-detail-page .cs-foreground-inset {
+    top: 40px !important;
+    bottom: 40px !important;
+    left: 40px !important;
+    right: 40px !important;
   }
 }

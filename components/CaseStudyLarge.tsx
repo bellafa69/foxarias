@@ -194,6 +194,13 @@ export default function CaseStudyLarge({
       onMouseLeave={() => setHovered(false)}
       style={{ paddingInline: 'var(--page-padding)', position: heroImages ? 'relative' : undefined }}
     >
+      {/* Mobile only (see .cs-mobile-tap-overlay) — no hover/cursor affordances
+          on touch, so the whole card is one tap target to the case study
+          instead of relying on the per-image hover pill. */}
+      {heroImages && href && (
+        <Link href={href} className="cs-mobile-tap-overlay" aria-label={title} />
+      )}
+
       {/* Number + title — one larger, more prominent element */}
       <div className="cs-title-row" style={{ marginBottom: heroImages ? '14px' : '12px' }}>
         <span style={{ ...bigTitleText, color: textColor, transition: 'color 0.4s ease', marginRight: '20px' }}>
@@ -315,7 +322,7 @@ export default function CaseStudyLarge({
                           Repositionable later via top/left/transform without
                           touching the background above. */}
                       {videoSrc ? (
-                        <div style={{
+                        <div className="cs-foreground-inset" style={{
                           position: 'absolute',
                           top: '80px',
                           bottom: '80px',
@@ -336,7 +343,7 @@ export default function CaseStudyLarge({
                           />
                         </div>
                       ) : foregroundNode ? (
-                        <div style={{
+                        <div className="cs-foreground-inset" style={{
                           position: 'absolute',
                           top: '80px',
                           bottom: '80px',
@@ -346,7 +353,7 @@ export default function CaseStudyLarge({
                           {foregroundNode}
                         </div>
                       ) : paddedForeground ? (
-                        <div style={{
+                        <div className="cs-foreground-inset" style={{
                           position: 'absolute',
                           top: '40px',
                           bottom: '40px',
@@ -365,7 +372,7 @@ export default function CaseStudyLarge({
                           </div>
                         </div>
                       ) : (
-                        <div style={{ position: 'absolute', inset: '0 5%' }}>
+                        <div className="cs-foreground-inset" style={{ position: 'absolute', inset: '0 5%' }}>
                           <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                             <Image
                               src={src}
@@ -413,6 +420,7 @@ export default function CaseStudyLarge({
                     bumps the size while keeping the same cursor-tracking. */}
                 {isImgHovered && (
                   <div
+                    className="cs-cursor-pill"
                     style={{
                       ...(href ? (largePill ? cursorPillLarge : cursorPill) : cursorPillComingSoon),
                       position: 'absolute',
@@ -487,7 +495,7 @@ export default function CaseStudyLarge({
       {/* Writing items — text-only article list, no images. Sits below the
           header hero image above when both are present. */}
       {writingItems && (
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, marginTop: images.length > 0 ? '32px' : 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, marginTop: images.length > 0 ? '16px' : 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {writingItems.map((item, i) => (
             <li key={i} className="cs-writing-item" style={{ ...writingItemText, color: 'var(--site-fg)' }}>
               <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: '#0000EE', textDecoration: 'none' }} onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')} onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}>
