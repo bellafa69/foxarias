@@ -165,7 +165,19 @@ a:hover {
     font-size: 36px !important;
     line-height: 42px !important;
   }
+  /* .cs-info-icon is dead CSS — no element uses this class anymore (the
+     homepage project-list header redesign removed the (i) icon entirely).
+     Left in place untouched since it has zero effect on any page. */
   .cs-info-icon { display: none !important; }
+
+  /* Homepage project-list header only (.cs-card-title-row — a distinct
+     class from .cs-title-row above, kept separate so this redesign can't
+     bleed into /work/fcc's header, which still uses .cs-title-row).
+     Same 25% title shrink as Fix 3, scoped to the new stacked layout. */
+  .cs-card-title-row .cs-title-text {
+    font-size: 36px !important;
+    line-height: 42px !important;
+  }
 
   /* Fix 4: image swipe — multi = 85% peek, single = full width */
   .cs-image-row {

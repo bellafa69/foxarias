@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 
-const TAGLINE = 'Isabella Fox Arias is a designer and producer.'
+const TAGLINE = 'Isabella Fox Arias is a designer.'
 
 const SKILLS = [
   'Art Direction', 'Producer / Project Management', 'Brand Strategy + Design', 'Web Design',
@@ -22,6 +22,11 @@ const UP_TO = [
   { label: "What I'm writing",  value: "Painter Jess Allen's Shadows" },
 ]
 
+const ABOUT_TEXT = [
+  "I work at the intersection of strategy, design, technology, and culture, all under the umbrella of problem-solving. While problems may look wildly different, the process is surprisingly consistent: asking a question, conducting cross-disciplinary research, building an argument, and giving the solution form.",
+  "App design, branding, editorial design, and website development are all different expressions of this same process.",
+]
+
 interface Props {
   infoInView?: boolean
   revealed?: boolean
@@ -34,7 +39,7 @@ interface Props {
   showMobileMeta?: boolean
 }
 
-type Col = 'contact' | 'skills' | 'upTo'
+type Col = 'about' | 'contact' | 'skills' | 'upTo'
 
 export default function Nav({ infoInView = true, revealed = true, animateTagline = true, showMobileMeta = true }: Props) {
   const [tagline, setTagline] = useState(animateTagline ? '' : TAGLINE)
@@ -105,10 +110,36 @@ export default function Nav({ infoInView = true, revealed = true, animateTagline
       <header
         className={`nav-desktop-header${mobileScrolled ? ' nav-mobile-hidden' : ''}`}
       >
-        {/* Logo + typewriter tagline — cols 1–6 */}
-        <div style={{ gridColumn: '1 / 7', display: 'flex', alignItems: 'center', gap: '16px' }}>
+        {/* Logo + typewriter tagline — cols 1–6. The logo itself doubles as the
+            hover trigger for the About dropdown, same mechanics as (CONTACT) etc. */}
+        <div
+          style={{ gridColumn: '1 / 7', display: 'flex', alignItems: 'center', gap: '16px', position: 'relative' }}
+          onMouseEnter={() => enter('about')}
+          onMouseLeave={leave}
+        >
           <Link href="/" style={{ ...navText, fontWeight: 700, letterSpacing: '-0.02em' }}>FOX ARIAS</Link>
           <span style={navText}>{tagline}</span>
+
+          {revealed && (
+            <AnimatePresence>
+              {activeCol === 'about' && (
+                <motion.div
+                  key="about-drop"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.12 }}
+                  style={{ ...dropPanel, width: '380px', whiteSpace: 'normal' }}
+                >
+                  {ABOUT_TEXT.map((para, i) => (
+                    <div key={i} style={{ ...dropText, marginTop: i > 0 ? '16px' : 0 }}>
+                      {para}
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
         </div>
 
         {revealed && (

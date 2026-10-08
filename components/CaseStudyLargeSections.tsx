@@ -17,7 +17,7 @@ const SECTIONS: Omit<CaseStudyLargeProps, 'number'>[] = [
     tags: 'Product Design, UX, Design Systems',
     heroImages: true,
     href: '/work/fcc',
-    infoText: "A full-scale redesign for a Fleet management platform.",
+    infoText: "Rebuilt the information architecture of a legacy fleet-management platform, creating a system that worked for both power users and new users.",
     images: [
       { src: fcc('03'), ratio: 3001 / 2228, height: 74, background: fcc('background') },
       { src: fcc('02'), ratio: 1962 / 2064, height: 80, background: fcc('background') },

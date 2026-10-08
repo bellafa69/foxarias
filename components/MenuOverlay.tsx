@@ -121,7 +121,7 @@ export default function MenuOverlay({ activeMenu, onMenuClick }: Props) {
             </button>
 
             <button onClick={() => onMenuClick(null)} style={{ ...navText, marginLeft: '16px' }}>
-              Isabella Fox Arias is a designer and producer.
+              Isabella Fox Arias is a designer.
             </button>
 
             <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>

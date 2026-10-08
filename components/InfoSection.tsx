@@ -9,6 +9,11 @@ const WHAT_IM_UP_TO = [
   { label: "What I'm writing",  value: "Painter Jess Allen's Shadows"  },
 ]
 
+const ABOUT_TEXT = [
+  "I work at the intersection of strategy, design, technology, and culture, all under the umbrella of problem-solving. While problems may look wildly different, the process is surprisingly consistent: asking a question, conducting cross-disciplinary research, building an argument, and giving the solution form.",
+  "App design, branding, editorial design, and website development are all different expressions of this same process.",
+]
+
 const colText: React.CSSProperties = {
   fontSize: '12px',
   lineHeight: '16px',
@@ -27,6 +32,15 @@ export default function InfoSection() {
         paddingBottom: '40px',
       }}
     >
+      {/* About — cols 1–6, under the logo */}
+      <div style={{ gridColumn: '1 / 7' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '380px' }}>
+          {ABOUT_TEXT.map((para, i) => (
+            <div key={i} style={colText}>{para}</div>
+          ))}
+        </div>
+      </div>
+
       {/* Contact — cols 7–8 */}
       <div style={{ gridColumn: '7 / 9' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>

@@ -6,8 +6,8 @@ import Link from 'next/link'
 
 export interface LargeImage {
   src: string
-  ratio: number // width / height — sizes the foreground screenshot at its own natural proportions
-  height: number // staggered render height — px normally, vh when heroImages is set
+  ratio: number // width / height — used only by the non-heroImages render path
+  height: number // px normally; ignored for heroImages, which uses a fixed HERO_CARD_HEIGHT_VH instead
   // heroImages only. When set, src renders as a foreground layer (its own
   // natural ratio, centered) on top of this background (fill + cover). When
   // omitted, src renders alone as a single fill + cover image instead.
@@ -18,24 +18,25 @@ export interface LargeImage {
   // heroImages only. Controls how much of the row this slot takes relative to
   // siblings. Defaults to 1 (equal share). Use e.g. 0.8/1.2 for a 40/60 split.
   flex?: number
-  // heroImages only. Disables the scale(1.20) on hover while keeping the
-  // cursor pill — useful when the hover enlarge doesn't suit the slot's content.
+  // Dead: the hover scale this disabled was removed. Kept on the type/data
+  // so existing entries don't need touching, but has no effect anymore.
   noHoverScale?: boolean
   // heroImages only. Disables all hover interaction for this slot — no
-  // scale, no cursor pill, normal cursor. Use for images with nothing to
-  // link to yet, where even a "Coming soon" pill isn't wanted.
+  // cursor pill, normal cursor. Use for images with nothing to link to yet,
+  // where even a "Coming soon" pill isn't wanted.
   noHover?: boolean
   // heroImages only. Slightly bumps up the cursor-follow pill's size (font +
   // padding) while keeping the exact same mouse-tracking behavior as the
   // default pill.
   largePill?: boolean
-  // heroImages only. Uses the inset-wrapper + objectFit:contain sizing for the
-  // foreground layer (80px top/bottom, 1/6 left/right) instead of width:90%
-  // centered. Use for single-slot layouts where the image would overflow at 90%.
+  // Dead: every foreground variant now shares one uniform inset
+  // (FOREGROUND_INSET_PERCENT), so this no longer changes anything. Kept on
+  // the type/data so existing entries don't need touching.
   paddedForeground?: boolean
-  // heroImages only. Renders an arbitrary React node as the foreground layer
-  // using the same 80px/1-6th inset as videoSrc. Use instead of videoSrc/src
-  // when the foreground is a self-contained component (e.g. scroll animation).
+  // heroImages only. Renders an arbitrary React node as the foreground layer,
+  // same uniform inset as every other foreground variant. Use instead of
+  // videoSrc/src when the foreground is a self-contained component (e.g.
+  // scroll animation).
   foregroundNode?: React.ReactNode
 }
 
@@ -77,8 +78,15 @@ const metaText: React.CSSProperties = {
   textTransform: 'uppercase', whiteSpace: 'nowrap',
 }
 
-// Number + title together, scaled well past the 14px title used in the
-// existing case study sections so this reads as the dominant element.
+// Role is the "headline" metadata item — full-opacity and a touch heavier
+// than the rest, so the four/five items read as distinct kinds of info
+// rather than one undifferentiated row.
+const metaRoleText: React.CSSProperties = {
+  ...metaText, fontWeight: 600,
+}
+
+// Title, scaled well past the 14px title used in the existing case study
+// sections so this reads as the dominant element.
 const bigTitleText: React.CSSProperties = {
   fontSize: '48px', lineHeight: '56px', fontWeight: 500,
   letterSpacing: '-0.02em', cursor: 'default',
@@ -94,6 +102,20 @@ const writingItemText: React.CSSProperties = {
 const INACTIVE_TEXT_COLOR = 'var(--site-fg-muted)'
 const ACTIVE_TEXT_COLOR = 'var(--site-fg)'
 const ACTIVE_VIEWPORT_RATIO = 0.25
+
+// "01" index — deliberately smaller and permanently muted (never toggles
+// with hover/scroll like the title does), so it reads as secondary.
+const indexText: React.CSSProperties = {
+  fontSize: '14px', lineHeight: '20px', fontWeight: 500,
+  color: INACTIVE_TEXT_COLOR,
+}
+
+// Always-visible one-sentence project summary — sits between the title and
+// the metadata as the hierarchy's middle level.
+const explainerText: React.CSSProperties = {
+  fontSize: '18px', lineHeight: '26px', fontWeight: 400,
+  color: 'var(--site-fg)', maxWidth: '640px',
+}
 
 const viewProjectPill: React.CSSProperties = {
   fontSize: '13px',
@@ -135,6 +157,21 @@ const cursorPillComingSoon: React.CSSProperties = {
   backgroundColor: '#ffffff',
 }
 
+// Structural: every hero card, in every row, is the same height — replaces
+// the previous per-image vh value (which varied 74/78/80 by row and
+// position within a row, causing uneven card heights at rest).
+const HERO_CARD_HEIGHT_VH = 74
+
+// Uniform inset on all four sides for every foreground layer, replacing the
+// previous per-variant insets (0/5%, 40px/one-sixth, 80px/one-sixth).
+// Compare against 6 — swap this one constant to try the tighter frame.
+const FOREGROUND_INSET_PERCENT = 4
+
+// Dark scrim over the background painting only — the foreground screenshot
+// layer is unaffected, so it stays at full brightness/contrast.
+// Compare against 0.5 for a stronger dim.
+const BACKGROUND_OVERLAY_OPACITY = 0.35
+
 export default function CaseStudyLarge({
   number, title, role, year, type, tags, status, images = [], heroImages = false, infoText, comingSoon = false, writingItems, href,
 }: CaseStudyLargeProps) {
@@ -143,7 +180,6 @@ export default function CaseStudyLarge({
   const [hovered, setHovered] = useState(false)
   const [hoveredImg, setHoveredImg] = useState<number | null>(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [infoHovered, setInfoHovered] = useState(false)
   const isActive = scrollActive || hovered
 
   // Percentage of the box's own rendered size, not raw px — the box itself is
@@ -201,48 +237,35 @@ export default function CaseStudyLarge({
         <Link href={href} className="cs-mobile-tap-overlay" aria-label={title} />
       )}
 
-      {/* Number + title — one larger, more prominent element */}
-      <div className="cs-title-row" style={{ marginBottom: heroImages ? '14px' : '12px' }}>
-        <span style={{ ...bigTitleText, color: textColor, transition: 'color 0.4s ease', marginRight: '20px' }}>
+      {/* Index + title — the numeral sits above the title as a secondary
+          label (own line, smaller, fixed muted colour) instead of inline
+          before it, so the title's left edge lines up with the metadata
+          and image columns below instead of being pushed in. */}
+      <div className="cs-card-title-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: 'var(--col-gap)' }}>
+        <span className="cs-title-number" style={indexText}>
           {String(number).padStart(2, '0')}
         </span>
-        <span style={{ ...bigTitleText, color: textColor, transition: 'color 0.4s ease' }}>
+        <span className="cs-title-text" style={{ ...bigTitleText, color: textColor, transition: 'color 0.4s ease' }}>
           {title}
         </span>
-        {heroImages && infoText && (
-          <span
-            className="cs-info-icon"
-            onMouseEnter={() => setInfoHovered(true)}
-            onMouseLeave={() => setInfoHovered(false)}
-            style={{
-              width: '14px',
-              height: '14px',
-              borderRadius: '50%',
-              border: `1.5px solid ${INACTIVE_TEXT_COLOR}`,
-              color: INACTIVE_TEXT_COLOR,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '8px',
-              fontStyle: 'normal',
-              fontWeight: 600,
-              cursor: 'help',
-              flexShrink: 0,
-              alignSelf: 'flex-start',
-              marginLeft: '10px',
-              marginTop: '12px',
-            }}
-          >
-            i
-          </span>
-        )}
       </div>
 
-      {/* Metadata — four distinct groups: role, year, type, tags. In the hero
-          variant this is permanently muted grey, a fixed secondary register
-          rather than toggling with the title's active/inactive color. */}
-      <div className="cs-metadata-row" style={{ paddingBottom: '32px' }}>
-        <span style={{ ...metaText, color: heroImages ? INACTIVE_TEXT_COLOR : textColor, transition: 'color 0.4s ease' }}>{role}</span>
+      {/* Explainer — the project's one-sentence summary, always visible as
+          the hierarchy's middle level between the title and the metadata.
+          Previously only shown as a hover-triggered overlay via the (i)
+          icon; now permanent, so that overlay/icon has been removed. */}
+      {heroImages && infoText && (
+        <p style={{ ...explainerText, margin: 0, marginBottom: 'var(--col-gap)' }}>
+          {infoText}
+        </p>
+      )}
+
+      {/* Metadata — role is the "headline" item (full opacity, heavier
+          weight); year/type/tags/status stay muted as secondary detail. In
+          the hero variant these are permanently muted/fixed rather than
+          toggling with the title's active/inactive color. */}
+      <div className="cs-metadata-row" style={{ paddingBottom: 'var(--col-gap)' }}>
+        <span style={{ ...metaRoleText, color: heroImages ? 'var(--site-fg)' : textColor, transition: 'color 0.4s ease' }}>{role}</span>
         <span style={{ ...metaText, color: heroImages ? INACTIVE_TEXT_COLOR : textColor, transition: 'color 0.4s ease' }}>{year}</span>
         <span style={{ ...metaText, color: heroImages ? INACTIVE_TEXT_COLOR : textColor, transition: 'color 0.4s ease' }}>{type}</span>
         <span style={{ ...metaText, color: heroImages ? INACTIVE_TEXT_COLOR : textColor, transition: 'color 0.4s ease' }}>{tags}</span>
@@ -262,22 +285,7 @@ export default function CaseStudyLarge({
           position: heroImages ? 'relative' : undefined,
         }}
       >
-        {/* Scrim — only covers the image row's own bounding box, so the info
-            overlay text needs no darkening where it's over plain black background */}
-        {heroImages && (
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.55)',
-              opacity: infoHovered ? 1 : 0,
-              transition: 'opacity 0.4s ease',
-              pointerEvents: 'none',
-              zIndex: 20,
-            }}
-          />
-        )}
-        {images.slice(0, 3).map(({ src, ratio, height, background, videoSrc, foregroundNode, flex: slotFlex = 1, noHoverScale = false, noHover = false, largePill = false, paddedForeground = false }, i) => {
+        {images.slice(0, 3).map(({ src, ratio, height, background, videoSrc, foregroundNode, flex: slotFlex = 1, noHover = false, largePill = false }, i) => {
           const isImgHovered = hoveredImg === i
           const slotCount = Math.min(images.length, 3)
           // Tell Next.js the actual rendered width so it picks the right srcset entry.
@@ -296,11 +304,8 @@ export default function CaseStudyLarge({
                   position: 'relative',
                   flex: slotFlex,
                   minWidth: 0,
-                  height: `${height}vh`,
+                  height: `${HERO_CARD_HEIGHT_VH}vh`,
                   cursor: noHover ? 'default' : 'none',
-                  transform: (isImgHovered && !noHoverScale) ? 'scale(1.20)' : 'scale(1)',
-                  zIndex: isImgHovered ? 10 : 1,
-                  transition: 'transform 0.3s ease',
                 }}
               >
                 {/* Crop/round wrapper, separate from the outer hover box so the
@@ -318,16 +323,21 @@ export default function CaseStudyLarge({
                         style={{ objectFit: 'cover' }}
                       />
 
-                      {/* Foreground layer — video or device screenshot, centered.
-                          Repositionable later via top/left/transform without
-                          touching the background above. */}
+                      {/* Scrim over the painting only — recedes it behind the
+                          foreground screenshot, which this never touches. */}
+                      <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundColor: `rgba(0, 0, 0, ${BACKGROUND_OVERLAY_OPACITY})`,
+                      }} />
+
+                      {/* Foreground layer — video, custom node, or device
+                          screenshot, centered, same inset on every side for
+                          every variant. */}
                       {videoSrc ? (
                         <div className="cs-foreground-inset" style={{
                           position: 'absolute',
-                          top: '80px',
-                          bottom: '80px',
-                          left: 'calc(100% / 6)',
-                          right: 'calc(100% / 6)',
+                          inset: `${FOREGROUND_INSET_PERCENT}%`,
                         }}>
                           <video
                             src={videoSrc}
@@ -345,34 +355,15 @@ export default function CaseStudyLarge({
                       ) : foregroundNode ? (
                         <div className="cs-foreground-inset" style={{
                           position: 'absolute',
-                          top: '80px',
-                          bottom: '80px',
-                          left: 'calc(100% / 6)',
-                          right: 'calc(100% / 6)',
+                          inset: `${FOREGROUND_INSET_PERCENT}%`,
                         }}>
                           {foregroundNode}
                         </div>
-                      ) : paddedForeground ? (
+                      ) : (
                         <div className="cs-foreground-inset" style={{
                           position: 'absolute',
-                          top: '40px',
-                          bottom: '40px',
-                          left: 'calc(100% / 6)',
-                          right: 'calc(100% / 6)',
+                          inset: `${FOREGROUND_INSET_PERCENT}%`,
                         }}>
-                          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                            <Image
-                              src={src}
-                              alt=""
-                              fill
-                              sizes={fgSizes}
-                              quality={90}
-                              style={{ objectFit: 'contain' }}
-                            />
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="cs-foreground-inset" style={{ position: 'absolute', inset: '0 5%' }}>
                           <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                             <Image
                               src={src}
@@ -510,38 +501,6 @@ export default function CaseStudyLarge({
         </ul>
       )}
 
-      {/* Info-icon overlay — large editorial pull-quote, absolutely positioned so
-          it never reflows the underlying title/image layout. Starts near the
-          section's top edge so it overlaps the title/metadata and the upper
-          part of the image row, rather than sitting centered in empty space.
-          The scrim inside the image row handles legibility where it crosses. */}
-      {heroImages && infoText && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-end',
-            paddingInline: 'var(--page-padding)',
-            paddingTop: '20px',
-            opacity: infoHovered ? 1 : 0,
-            transition: 'opacity 0.4s ease',
-            pointerEvents: 'none',
-            zIndex: 30,
-          }}
-        >
-          <p style={{
-            ...bigTitleText,
-            maxWidth: '900px',
-            margin: 0,
-            color: '#ffffff',
-            textAlign: 'left',
-          }}>
-            {infoText}
-          </p>
-        </div>
-      )}
     </section>
   )
 }

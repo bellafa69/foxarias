@@ -133,7 +133,7 @@ export default function MobileIntroGate() {
               FOX ARIAS
             </span>
             <span style={{ ...blendText, fontSize: '16px', lineHeight: '20px', fontWeight: 500 }}>
-              Isabella Fox Arias is a designer and producer.
+              Isabella Fox Arias is a designer.
             </span>
           </div>
 
