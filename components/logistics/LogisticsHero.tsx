@@ -1,9 +1,14 @@
+'use client'
+
+import { motion } from 'framer-motion'
 import type { SiteContent } from '@/components/siteContent'
 
-// Above the slideshow: the headline and the offer, nothing else. The rest of
-// the intro (explanation, proof, services, contact) sits below the slideshow
-// in LogisticsDetails.
+// Opening: headline, offer and FCC proof on the left; Services on the right,
+// aligned with the offer. The header carries identity and contact. Entrance is
+// opacity and an 8px rise only (no layout shift), headline first, then the
+// offer, then proof and Services; the whole sequence is under 900 ms.
 const EMPHASIS = 'Fleet Cost & Care'
+const EASE = [0.2, 0.7, 0.2, 1] as const
 
 function Proof({ text }: { text: string }) {
   const i = text.indexOf(EMPHASIS)
@@ -17,42 +22,33 @@ function Proof({ text }: { text: string }) {
   )
 }
 
-export default function LogisticsHero({ content }: { content: SiteContent }) {
+export default function LogisticsHero({ content, ready, instant }: { content: SiteContent; ready: boolean; instant: boolean }) {
   const hero = content.hero
   if (!hero) return null
+  const t = (delay: number) => ({ duration: instant ? 0 : 0.45, delay: instant ? 0 : delay, ease: EASE })
+  const hidden = { opacity: 0, y: 8 }
+  const shown = ready ? { opacity: 1, y: 0 } : hidden
   return (
     <div className="lg-hero">
-      <h1 className="lg-hero-headline">{hero.headline}</h1>
-      <p className="lg-hero-offer">{hero.offer}</p>
+      <motion.h1 className="lg-hero-headline" initial={hidden} animate={shown} transition={t(0)}>{hero.headline}</motion.h1>
+      <motion.p className="lg-hero-offer" initial={hidden} animate={shown} transition={t(0.15)}>{hero.offer}</motion.p>
+      <motion.p className="lg-hero-proof" initial={hidden} animate={shown} transition={t(0.3)}><Proof text={hero.proof} /></motion.p>
+      <motion.div className="lg-hero-services" initial={hidden} animate={shown} transition={t(0.3)}>
+        <div className="lg-hero-services-label">Services</div>
+        <ul>
+          {content.skills.map(skill => <li key={skill}>{skill}</li>)}
+        </ul>
+      </motion.div>
     </div>
   )
 }
 
-export function LogisticsDetails({ content }: { content: SiteContent }) {
-  const hero = content.hero
-  if (!hero) return null
+// The wider explanation sits between the slideshow and the problem sections.
+export function LogisticsIntro({ content }: { content: SiteContent }) {
+  if (!content.hero) return null
   return (
-    <div className="lg-details">
-      <div className="lg-details-text">
-        <p className="lg-details-body">{hero.body}</p>
-        <p className="lg-details-proof"><Proof text={hero.proof} /></p>
-      </div>
-
-      <div>
-        <div className="lg-details-label">Services</div>
-        <ul>
-          {content.skills.map(skill => <li key={skill}>{skill}</li>)}
-        </ul>
-      </div>
-
-      <div>
-        <div className="lg-details-invite">{hero.invitation}</div>
-        <a className="lg-details-email" href={`mailto:${content.email}`}>{content.email}</a>
-        <div className="lg-details-support">
-          {content.location.map(l => <span key={l}>{l}</span>)}
-          <a href={content.linkedinHref} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </div>
-      </div>
+    <div className="lg-intro">
+      <p>{content.hero.body}</p>
     </div>
   )
 }

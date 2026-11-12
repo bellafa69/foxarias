@@ -39,7 +39,7 @@ export interface HeroSlide {
 // Order alternates desk and field to match the headline. The three desktop
 // slides are cropped from the full screens to the part that carries the point.
 export const HERO_SLIDES: HeroSlide[] = [
-  { id: 'h5', kind: 'image', src: `${base}/hero-5-schedule-crop-hr.webp`, width: 2304, height: 751, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'Weekly schedule with two flagged equipment and crew conflicts' },
+  { id: 'h5', kind: 'image', src: `${base}/hero-5-schedule-crop-hr.webp`, width: 2304, height: 1080, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'Weekly schedule with two flagged equipment and crew conflicts' },
   { id: 'h1', kind: 'video', src: `${base}/hero-1-recording.mp4`, poster: `${base}/hero-1-recording-poster.webp`, width: 2400, height: 2000, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A technician records a repair by voice and the work order fills in' },
   { id: 'h4', kind: 'image', src: `${base}/hero-4-morning-brief-crop-hr.webp`, width: 1557, height: 1224, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A morning brief with three priorities above a work queue' },
   { id: 'h2', kind: 'video', src: `${base}/hero-2-photo-scan.mp4`, poster: `${base}/hero-2-photo-scan-poster.webp`, width: 2400, height: 2000, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A photo of a part is scanned and read into the work order' },
