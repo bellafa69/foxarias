@@ -382,24 +382,27 @@ a:hover {
 .lg-header-left .lg-logo { font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
 .lg-header-left .lg-tagline { white-space: nowrap; }
 @media (max-width: 1320px) { .lg-header-left .lg-tagline { white-space: normal; } }
-.lg-nav-label { font-size: 12px; line-height: 16px; font-weight: 500; white-space: nowrap; color: var(--site-fg-muted); }
-.lg-nav-label[data-open='true'] { color: var(--site-fg); text-decoration: underline; text-underline-offset: 3px; }
-.lg-nav-drop { position: absolute; top: 48px; left: 0; width: 260px; padding: 12px 0 20px; background: #000; font-size: 12px; line-height: 16px; font-weight: 500; }
-.lg-nav-drop a { display: block; color: var(--site-fg); }
-.lg-nav-drop a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .lg-header-email { color: rgba(255, 255, 255, 0.9); text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.4); text-underline-offset: 4px; transition: color 0.2s ease, text-decoration-color 0.2s ease; white-space: nowrap; }
 .lg-header-email:hover { color: #ffffff; text-decoration-color: #ffffff; }
 
 .lg-hero {
   padding: 40px var(--page-padding) 32px;
-  display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); column-gap: 64px; align-items: start;
+  display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; align-items: start;
 }
-.lg-hero-headline { grid-column: 1; grid-row: 1; margin: 0; max-width: 640px; font-size: 36px; line-height: 40px; font-weight: 500; letter-spacing: -0.025em; color: var(--site-fg); text-wrap: balance; }
-.lg-hero-offer { grid-column: 1; grid-row: 2; margin: 20px 0 0; max-width: 620px; text-wrap: pretty; font-size: 18px; line-height: 26px; font-weight: 400; color: rgba(255, 255, 255, 0.82); }
-.lg-hero-proof { grid-column: 1; grid-row: 3; margin: 16px 0 0; max-width: 560px; font-size: 14px; line-height: 20px; font-weight: 400; color: rgba(255, 255, 255, 0.9); }
+/* Titles use the main site's nav-label style: 12px, medium, capitals in parentheses, muted. */
+.lg-label { font-size: 12px; line-height: 16px; font-weight: 500; color: var(--site-fg-muted); margin-bottom: 8px; }
+.lg-hero-headline { grid-column: 1 / 7; grid-row: 1; margin: 0; max-width: 640px; font-size: 36px; line-height: 40px; font-weight: 500; letter-spacing: -0.025em; color: var(--site-fg); text-wrap: balance; }
+.lg-hero-offer { grid-column: 1 / 7; grid-row: 2; margin: 20px 0 0; max-width: 620px; text-wrap: pretty; font-size: 18px; line-height: 26px; font-weight: 400; color: rgba(255, 255, 255, 0.82); }
+.lg-hero-proof { grid-column: 1 / 7; grid-row: 3; margin-top: 32px; max-width: 560px; font-size: 14px; line-height: 20px; color: rgba(255, 255, 255, 0.9); }
+.lg-hero-proof p { margin: 0; }
 .lg-hero-proof strong { font-weight: 500; }
-.lg-hero-services { grid-column: 2; grid-row: 2 / span 2; margin-top: 20px; font-size: 14px; line-height: 22px; }
-.lg-hero-services-label { font-size: 14px; line-height: 20px; font-weight: 500; color: rgba(255, 255, 255, 0.55); margin-bottom: 8px; }
+.lg-hero-contact { grid-column: 7 / 9; grid-row: 2 / span 2; margin-top: 20px; font-size: 14px; line-height: 22px; color: rgba(255, 255, 255, 0.85); }
+.lg-hero-contact a { display: block; }
+.lg-hero-contact .lg-hero-email { color: #fff; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.4); text-underline-offset: 4px; margin-top: 4px; white-space: nowrap; }
+.lg-hero-contact .lg-hero-email:hover { text-decoration-color: #fff; }
+.lg-hero-contact a:not(.lg-hero-email):hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.lg-hero-gap { height: 20px; }
+.lg-hero-services { grid-column: 9 / 11; grid-row: 2 / span 2; margin-top: 20px; font-size: 14px; line-height: 22px; }
 .lg-hero-services ul { list-style: none; margin: 0; padding: 0; }
 .lg-hero-services li { color: rgba(255, 255, 255, 0.85); }
 
@@ -407,11 +410,16 @@ a:hover {
 .lg-intro p { margin: 0; max-width: 560px; font-size: 14px; line-height: 22px; color: rgba(255, 255, 255, 0.78); }
 .lg-accordion { padding-top: 80px; }
 
+@media (max-width: 1240px) {
+  .lg-hero-contact { grid-column: 7 / 10; }
+  .lg-hero-services { grid-column: 10 / 13; }
+}
 @media (max-width: 1024px) {
   .lg-hero { grid-template-columns: 1fr; padding: 24px var(--page-padding) 28px; }
-  .lg-hero-headline, .lg-hero-offer, .lg-hero-proof, .lg-hero-services { grid-column: 1; grid-row: auto; }
+  .lg-hero-headline, .lg-hero-offer, .lg-hero-proof, .lg-hero-contact, .lg-hero-services { grid-column: 1; grid-row: auto; }
   .lg-hero-headline { font-size: 28px; line-height: 32px; }
   .lg-hero-offer { margin-top: 16px; font-size: 16px; line-height: 24px; }
-  .lg-hero-services { margin-top: 24px; }
+  .lg-hero-proof { margin-top: 24px; }
+  .lg-hero-services, .lg-hero-contact { margin-top: 24px; }
   .lg-intro { padding-top: 56px; }
 }

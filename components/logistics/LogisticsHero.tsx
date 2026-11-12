@@ -32,12 +32,24 @@ export default function LogisticsHero({ content, ready, instant }: { content: Si
     <div className="lg-hero">
       <motion.h1 className="lg-hero-headline" initial={hidden} animate={shown} transition={t(0)}>{hero.headline}</motion.h1>
       <motion.p className="lg-hero-offer" initial={hidden} animate={shown} transition={t(0.15)}>{hero.offer}</motion.p>
-      <motion.p className="lg-hero-proof" initial={hidden} animate={shown} transition={t(0.3)}><Proof text={hero.proof} /></motion.p>
+      <motion.div className="lg-hero-proof" initial={hidden} animate={shown} transition={t(0.3)}>
+        <div className="lg-label">(MY MOST RECENT PROJECT)</div>
+        <p><Proof text={hero.proof} /></p>
+      </motion.div>
       <motion.div className="lg-hero-services" initial={hidden} animate={shown} transition={t(0.3)}>
-        <div className="lg-hero-services-label">Services</div>
+        <div className="lg-label">(SERVICES)</div>
         <ul>
           {content.skills.map(skill => <li key={skill}>{skill}</li>)}
         </ul>
+      </motion.div>
+      <motion.div className="lg-hero-contact" initial={hidden} animate={shown} transition={t(0.3)}>
+        <div className="lg-label">(CONTACT)</div>
+        {content.location.map(l => <div key={l}>{l}</div>)}
+        <div className="lg-hero-gap" />
+        <div>{hero.invitation}</div>
+        <a className="lg-hero-email" href={`mailto:${content.email}`}>{content.email}</a>
+        <a href={content.linkedinHref} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        {content.instagramHref && <a href={content.instagramHref} target="_blank" rel="noopener noreferrer">Instagram</a>}
       </motion.div>
     </div>
   )
