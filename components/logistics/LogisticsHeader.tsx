@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import type { SiteContent } from '@/components/siteContent'
 
-const navText: React.CSSProperties = { fontSize: '17px', lineHeight: '26px', fontWeight: 400, color: 'var(--site-fg)' }
+const navText: React.CSSProperties = { fontSize: 'max(12px, calc(17px * var(--ts)))', lineHeight: 'calc(26px * var(--ts))', fontWeight: 400, color: 'var(--site-fg)' }
 
 // Header for the logistics page: logo and one-line introduction, visible from
 // the first paint (no typing). Once the hero scrolls out of view, the email
@@ -20,7 +20,7 @@ export default function LogisticsHeader({ content, showEmail }: { content: SiteC
           href={`mailto:${content.email}`}
           tabIndex={showEmail ? 0 : -1}
           style={{
-            gridColumn: '11 / 13', justifySelf: 'end', fontSize: '17px', lineHeight: '26px', fontWeight: 400,
+            gridColumn: '11 / 13', justifySelf: 'end', fontSize: 'max(12px, calc(17px * var(--ts)))', lineHeight: 'calc(26px * var(--ts))', fontWeight: 400,
             color: 'var(--site-fg)', textDecoration: 'underline', textUnderlineOffset: '3px',
             opacity: showEmail ? 1 : 0, pointerEvents: showEmail ? 'auto' : 'none', transition: 'opacity 0.2s ease',
           }}
@@ -33,10 +33,10 @@ export default function LogisticsHeader({ content, showEmail }: { content: SiteC
         className="nav-mobile-stack"
         style={{ paddingInline: 'var(--page-padding)', paddingTop: '16px', paddingBottom: '8px', backgroundColor: 'var(--site-bg)', color: 'var(--site-fg)' }}
       >
-        <Link href="/" style={{ display: 'block', fontSize: '17px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)', marginBottom: '4px' }}>
+        <Link href="/" style={{ display: 'block', fontSize: 'max(12px, calc(17px * var(--ts)))', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)', marginBottom: '4px' }}>
           FOX ARIAS
         </Link>
-        <div style={{ fontSize: '17px', lineHeight: '26px', fontWeight: 400, color: 'var(--site-fg)' }}>{content.tagline}</div>
+        <div style={{ fontSize: 'max(12px, calc(17px * var(--ts)))', lineHeight: 'calc(26px * var(--ts))', fontWeight: 400, color: 'var(--site-fg)' }}>{content.tagline}</div>
       </div>
     </>
   )

@@ -7,9 +7,9 @@ import { CONCEPT_NOTE, CONCEPT_TITLE, HERO_SLIDES, SHOW_CONCEPT_LABELS } from '.
 const AUTOPLAY_MS = 6000
 
 const labelBase: React.CSSProperties = {
-  fontSize: '17px',
-  lineHeight: '26px',
-  fontWeight: 500,
+  fontSize: '12px',
+  lineHeight: '16px',
+  fontWeight: 400,
   letterSpacing: '0.01em',
   whiteSpace: 'nowrap',
 }
@@ -20,7 +20,6 @@ const labelBase: React.CSSProperties = {
 export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boolean }) {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
-  const [userPaused, setUserPaused] = useState(false)
   const reducedMotion = useRef(false)
   const total = HERO_SLIDES.length
 
@@ -33,12 +32,12 @@ export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boo
   }, [])
 
   useEffect(() => {
-    if (!autoplay || paused || userPaused) return
+    if (!autoplay || paused) return
     const id = setInterval(() => {
       if (!reducedMotion.current) go(1)
     }, AUTOPLAY_MS)
     return () => clearInterval(id)
-  }, [autoplay, paused, userPaused, index, go])
+  }, [autoplay, paused, index, go])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -61,16 +60,15 @@ export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boo
       onBlur={() => setPaused(false)}
     >
       <div className="lg-slideshow-caption">
-        <span style={{ display: 'flex', gap: '16px', ...labelBase, color: 'var(--site-fg)' }}>
+        <span style={{ display: 'flex', gap: '16px', ...labelBase, color: 'var(--site-fg-muted)' }}>
           <span>{CONCEPT_TITLE ?? slide.name}</span>
           {SHOW_CONCEPT_LABELS && <span style={{ color: 'var(--site-fg-muted)' }}>{slide.label}</span>}
           {SHOW_CONCEPT_LABELS && CONCEPT_NOTE && <span style={{ color: 'var(--site-fg-muted)', whiteSpace: 'normal' }}>{CONCEPT_NOTE}</span>}
         </span>
         <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button type="button" aria-label={userPaused ? 'Play slideshow' : 'Pause slideshow'} aria-pressed={userPaused} onClick={() => setUserPaused(v => !v)} style={{ ...labelBase, color: 'var(--site-fg)', opacity: 0.5 }}>{userPaused ? 'Play' : 'Pause'}</button>
-          <button type="button" aria-label="Previous slide" onClick={() => go(-1)} style={{ ...labelBase, color: 'var(--site-fg)', opacity: 0.5 }}>←</button>
-          <button type="button" aria-label="Next slide" onClick={() => go(1)} style={{ ...labelBase, color: 'var(--site-fg)', opacity: 0.5 }}>→</button>
-          <span style={{ ...labelBase, color: 'var(--site-fg)' }} aria-live="polite">
+          <button type="button" aria-label="Previous slide" onClick={() => go(-1)} style={{ ...labelBase, color: 'var(--site-fg-muted)' }}>←</button>
+          <button type="button" aria-label="Next slide" onClick={() => go(1)} style={{ ...labelBase, color: 'var(--site-fg-muted)' }}>→</button>
+          <span style={{ ...labelBase, color: 'var(--site-fg-muted)' }} aria-live="polite">
             {index + 1} — {total}
           </span>
         </span>

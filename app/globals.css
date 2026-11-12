@@ -332,7 +332,7 @@ a:hover {
 }
 .lg-col-num { grid-column: 1 / 2; }
 .lg-col-problem {
-  grid-column: 2 / 9; margin: 0; font-size: 32px; line-height: 38px; font-weight: 500;
+  grid-column: 2 / 9; margin: 0; font-size: max(12px, calc(32px * var(--ts))); line-height: calc(38px * var(--ts)); font-weight: 500;
   letter-spacing: -0.02em; transition: color 0.4s ease;
 }
 .lg-col-tag { grid-column: 9 / 12; }
@@ -355,7 +355,7 @@ a:hover {
   .lg-row-header { position: static; }
   .lg-row-header-grid { grid-template-columns: 32px 1fr auto; row-gap: 4px; }
   .lg-col-num { grid-column: 1; }
-  .lg-col-problem { grid-column: 2 / 4; font-size: 24px; line-height: 30px; }
+  .lg-col-problem { grid-column: 2 / 4; font-size: max(12px, calc(24px * var(--ts))); line-height: calc(30px * var(--ts)); }
   .lg-col-tag { grid-column: 2; }
   .lg-col-step { grid-column: 3; }
   .lg-row-body { grid-template-columns: 1fr; padding-block: 24px 64px; row-gap: 32px; }
@@ -376,20 +376,20 @@ a:hover {
   column-gap: 64px; align-items: start;
 }
 .lg-hero > * { grid-column: 1; margin: 0; }
-.lg-hero-headline { grid-row: 1; max-width: 750px; font-size: 48px; line-height: 52px; font-weight: 500; letter-spacing: -0.025em; color: var(--site-fg); text-wrap: balance; }
-.lg-hero-offer    { grid-row: 2; margin-top: 32px !important; max-width: 720px; font-size: 22px; line-height: 31px; font-weight: 500; color: var(--site-fg); }
+.lg-hero-headline { grid-row: 1; max-width: 750px; font-size: max(12px, calc(48px * var(--ts))); line-height: calc(52px * var(--ts)); font-weight: 500; letter-spacing: -0.025em; color: var(--site-fg); text-wrap: balance; }
+.lg-hero-offer    { grid-row: 2; margin-top: 32px !important; max-width: 720px; font-size: max(12px, calc(22px * var(--ts))); line-height: calc(31px * var(--ts)); font-weight: 500; color: var(--site-fg); }
 .lg-hero-body     { grid-row: 3; margin-top: 24px !important; max-width: 700px; color: rgba(255, 255, 255, 0.7); }
 .lg-hero-proof    { grid-row: 4; margin-top: 24px !important; max-width: 700px; color: var(--site-fg); }
 .lg-hero-contact  { grid-row: 5; margin-top: 32px !important; }
 .lg-hero-body, .lg-hero-proof, .lg-hero-services li, .lg-hero-invite, .lg-hero-email, .lg-hero-support, .lg-hero-label {
-  font-size: 17px; line-height: 26px; font-weight: 400;
+  font-size: max(12px, calc(17px * var(--ts))); line-height: calc(26px * var(--ts)); font-weight: 400;
 }
 .lg-hero-proof strong { font-weight: 500; }
 /* Services: beside the offer (row 2), not the headline. */
 .lg-hero-services { grid-column: 2; grid-row: 2 / span 4; margin-top: 32px !important; }
 .lg-hero-label { font-weight: 500; letter-spacing: 0.04em; color: var(--site-fg-muted); margin-bottom: 12px; }
 .lg-hero-services ul { list-style: none; margin: 0; padding: 0; }
-.lg-hero-services li { line-height: 28px; color: rgba(255, 255, 255, 0.85); }
+.lg-hero-services li { line-height: calc(28px * var(--ts)); color: rgba(255, 255, 255, 0.85); }
 .lg-hero-invite { color: rgba(255, 255, 255, 0.7); }
 .lg-hero-email { display: inline-block; margin-top: 8px; color: var(--site-fg); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
 .lg-hero-email:hover { text-decoration-thickness: 2px; }
@@ -399,9 +399,9 @@ a:hover {
 
 @media (max-width: 1024px) {
   .lg-hero { grid-template-columns: 1fr; padding-top: 24px; padding-bottom: 40px; }
-  .lg-hero-headline { font-size: 32px; line-height: 36px; }
+  .lg-hero-headline { font-size: max(12px, calc(32px * var(--ts))); line-height: calc(36px * var(--ts)); }
   .lg-hero > * { grid-row: auto !important; grid-column: 1 !important; }
-  .lg-hero-offer { margin-top: 24px !important; font-size: 20px; line-height: 29px; }
+  .lg-hero-offer { margin-top: 24px !important; font-size: max(12px, calc(20px * var(--ts))); line-height: calc(29px * var(--ts)); }
   .lg-hero-services { margin-top: 32px !important; }
   .lg-hero-contact { margin-top: 32px !important; }
 }
@@ -409,3 +409,6 @@ a:hover {
 /* Logistics header: solid so page content never shows through when sticky. */
 .lg-page .nav-desktop-header { background-color: #000000; }
 .lg-slideshow-caption { gap: 8px 16px; flex-wrap: wrap; }
+
+/* Type scale for the whole logistics page. 1 = original sizes; revert by setting to 1. */
+.lg-page { --ts: 0.75; }
