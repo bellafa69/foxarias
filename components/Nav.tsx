@@ -3,29 +3,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
-
-const TAGLINE = 'Isabella Fox Arias is a designer.'
-
-const SKILLS = [
-  'Art Direction', 'Producer / Project Management', 'Brand Strategy + Design', 'Web Design',
-  'Information Architecture', 'UX/UI Design', 'Content Strategy', 'Editorial Design',
-]
-
-const MOBILE_SKILLS = [
-  'Art Direction', 'Producer / Project Management', 'Brand Strategy + Design',
-  'Web Design', 'Information Architecture', 'UX/UI Design',
-]
-
-const UP_TO = [
-  { label: "What I'm reading",  value: 'Babel by R.F. Kuang'         },
-  { label: "What I'm painting", value: 'The Heroines Journey'         },
-  { label: "What I'm writing",  value: "Painter Jess Allen's Shadows" },
-]
-
-const ABOUT_TEXT = [
-  "I work at the intersection of strategy, design, technology, and culture, all under the umbrella of problem-solving. While problems may look wildly different, the process is surprisingly consistent: asking a question, conducting cross-disciplinary research, building an argument, and giving the solution form.",
-  "App design, branding, editorial design, and website development are all different expressions of this same process.",
-]
+import { HOME_CONTENT, type SiteContent } from './siteContent'
 
 interface Props {
   infoInView?: boolean
@@ -37,11 +15,16 @@ interface Props {
   // (logo/tagline still show) — used on case study detail pages, which keep
   // the desktop nav's contact/skills columns untouched via `revealed`.
   showMobileMeta?: boolean
+  // Hero copy. Defaults to the homepage copy.
+  content?: SiteContent
+  // Milliseconds per character for the tagline typing. Homepage uses 60.
+  typeSpeedMs?: number
 }
 
 type Col = 'about' | 'contact' | 'skills' | 'upTo'
 
-export default function Nav({ infoInView = true, revealed = true, animateTagline = true, showMobileMeta = true }: Props) {
+export default function Nav({ infoInView = true, revealed = true, animateTagline = true, showMobileMeta = true, content = HOME_CONTENT, typeSpeedMs = 60 }: Props) {
+  const TAGLINE = content.tagline
   const [tagline, setTagline] = useState(animateTagline ? '' : TAGLINE)
   const [activeCol, setActiveCol] = useState<Col | null>(null)
   const [mobileScrolled, setMobileScrolled] = useState(false)
@@ -81,9 +64,9 @@ export default function Nav({ infoInView = true, revealed = true, animateTagline
       i++
       setTagline(TAGLINE.slice(0, i))
       if (i >= TAGLINE.length) clearInterval(interval)
-    }, 60)
+    }, typeSpeedMs)
     return () => clearInterval(interval)
-  }, [animateTagline])
+  }, [animateTagline, TAGLINE, typeSpeedMs])
 
   useEffect(() => {
     if (infoInView) setActiveCol(null)
@@ -131,7 +114,7 @@ export default function Nav({ infoInView = true, revealed = true, animateTagline
                   transition={{ duration: 0.12 }}
                   style={{ ...dropPanel, width: '380px', whiteSpace: 'normal' }}
                 >
-                  {ABOUT_TEXT.map((para, i) => (
+                  {content.about.map((para, i) => (
                     <div key={i} style={{ ...dropText, marginTop: i > 0 ? '16px' : 0 }}>
                       {para}
                     </div>
@@ -168,17 +151,17 @@ export default function Nav({ infoInView = true, revealed = true, animateTagline
                     transition={{ duration: 0.12 }}
                     style={dropPanel}
                   >
-                    <div style={dropText}>Between Barcelona, ES</div>
-                    <div style={dropText}>and Brooklyn, New York.</div>
+                    {content.location.map(l => <div key={l} style={dropText}>{l}</div>)}
                     <div style={{ height: '28px' }} />
-                    <div style={dropText}>For Projects, Jobs,</div>
-                    <div style={dropText}>or to talk about books:</div>
+                    {content.contactPrompt.map(l => <div key={l} style={dropText}>{l}</div>)}
                     <div style={{ height: '28px' }} />
-                    <a href="mailto:bellaarias@gmail.com" style={{ ...dropText, display: 'block' }}>
-                      bellaarias@gmail.com
+                    <a href={`mailto:${content.email}`} style={{ ...dropText, display: 'block' }}>
+                      {content.email}
                     </a>
-                    <a href="#" style={{ ...dropText, display: 'block' }}>LinkedIn</a>
-                    <a href="#" style={{ ...dropText, display: 'block' }}>Instagram</a>
+                    <a href={content.linkedinHref} target="_blank" rel="noopener noreferrer" style={{ ...dropText, display: 'block' }}>LinkedIn</a>
+                    {content.instagramHref && (
+                      <a href={content.instagramHref} target="_blank" rel="noopener noreferrer" style={{ ...dropText, display: 'block' }}>Instagram</a>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -208,7 +191,7 @@ export default function Nav({ infoInView = true, revealed = true, animateTagline
                     transition={{ duration: 0.12 }}
                     style={dropPanel}
                   >
-                    {SKILLS.map(skill => (
+                    {content.skills.map(skill => (
                       <div key={skill} style={dropText}>{skill}</div>
                     ))}
                   </motion.div>
@@ -216,41 +199,42 @@ export default function Nav({ infoInView = true, revealed = true, animateTagline
               </AnimatePresence>
             </div>
 
-            {/* (WHAT I'M UP TO) — cols 11–12 */}
-            <div
-              style={{ gridColumn: '11 / 13', ...colWrap }}
-              onMouseEnter={() => enter('upTo')}
-              onMouseLeave={leave}
-            >
-              <span style={{
-                ...smallText,
-                color: activeCol === 'upTo' ? navColor : navItemInactiveColor,
-                textDecoration: activeCol === 'upTo' ? 'underline' : 'none',
-                textUnderlineOffset: '3px',
-              }}>
-                (WHAT I'M UP TO)
-              </span>
-              <AnimatePresence>
-                {activeCol === 'upTo' && (
-                  <motion.div
-                    key="upTo-drop"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.12 }}
-                    style={dropPanel}
-                  >
-                    {UP_TO.map((item, i) => (
-                      <div key={item.label}>
-                        {i > 0 && <div style={{ height: '28px' }} />}
-                        <div style={{ ...dropText, opacity: 0.5 }}>{item.label}</div>
-                        <div style={dropText}>{item.value}</div>
-                      </div>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            {content.upTo && (
+              <div
+                style={{ gridColumn: '11 / 13', ...colWrap }}
+                onMouseEnter={() => enter('upTo')}
+                onMouseLeave={leave}
+              >
+                <span style={{
+                  ...smallText,
+                  color: activeCol === 'upTo' ? navColor : navItemInactiveColor,
+                  textDecoration: activeCol === 'upTo' ? 'underline' : 'none',
+                  textUnderlineOffset: '3px',
+                }}>
+                  (WHAT I'M UP TO)
+                </span>
+                <AnimatePresence>
+                  {activeCol === 'upTo' && (
+                    <motion.div
+                      key="upTo-drop"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.12 }}
+                      style={dropPanel}
+                    >
+                      {content.upTo?.map((item, i) => (
+                        <div key={item.label}>
+                          {i > 0 && <div style={{ height: '28px' }} />}
+                          <div style={{ ...dropText, opacity: 0.5 }}>{item.label}</div>
+                          <div style={dropText}>{item.value}</div>
+                        </div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
           </>
         )}
       </header>
@@ -279,36 +263,36 @@ export default function Nav({ infoInView = true, revealed = true, animateTagline
           <div style={{ display: 'flex', gap: 'var(--col-gap)' }}>
             {/* 3. Contact */}
             <div style={{ flex: 1 }}>
-              <div style={mobileText}>Between Barcelona, ES</div>
-              <div style={mobileText}>and Brooklyn, New York.</div>
+              {content.location.map(l => <div key={l} style={mobileText}>{l}</div>)}
               <div style={{ height: '16px' }} />
-              <div style={mobileText}>For Projects, Jobs,</div>
-              <div style={mobileText}>or to talk about books:</div>
+              {content.contactPrompt.map(l => <div key={l} style={mobileText}>{l}</div>)}
               <div style={{ height: '16px' }} />
-              <a href="mailto:bellaarias@gmail.com" style={{ ...mobileText, display: 'block' }}>
-                bellaarias@gmail.com
+              <a href={`mailto:${content.email}`} style={{ ...mobileText, display: 'block' }}>
+                {content.email}
               </a>
               <a
-                href="https://www.linkedin.com/in/isabella-fox-arias-20b1a0145/"
+                href={content.linkedinHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ ...mobileText, display: 'block' }}
               >
                 LinkedIn
               </a>
-              <a
-                href="https://www.instagram.com/bellafoxarias/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ ...mobileText, display: 'block' }}
-              >
-                Instagram
-              </a>
+              {content.instagramHref && (
+                <a
+                  href={content.instagramHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ ...mobileText, display: 'block' }}
+                >
+                  Instagram
+                </a>
+              )}
             </div>
 
             {/* 4. Skills — 6 items only on mobile */}
             <div style={{ flex: 1 }}>
-              {MOBILE_SKILLS.map(skill => (
+              {content.mobileSkills.map(skill => (
                 <div key={skill} style={mobileText}>{skill}</div>
               ))}
             </div>

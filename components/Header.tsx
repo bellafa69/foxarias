@@ -41,8 +41,7 @@ export default function Header() {
       {/* Cols 5–6: Contact */}
       <div style={{ gridColumn: '5 / span 2', ...col, gap: '20px' }}>
         <div style={{ ...col }}>
-          <span style={mono}>Between Barcelona, ES</span>
-          <span style={mono}>and Brooklyn, New York.</span>
+          <span style={mono}>Remote</span>
         </div>
 
         <div style={{ ...col }}>
@@ -51,7 +50,7 @@ export default function Header() {
         </div>
 
         <div style={{ ...col }}>
-          <BlockLink href="mailto:bellaarias@gmail.com">bellaarias@gmail.com</BlockLink>
+          <BlockLink href="mailto:isabella@foxarias.com">isabella@foxarias.com</BlockLink>
         </div>
 
         <div style={{ ...col }}>

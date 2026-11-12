@@ -37,7 +37,7 @@ export default function Footer() {
         }}>
           Get in touch. /{' '}
           <a
-            href="mailto:bellaarias@gmail.com"
+            href="mailto:isabella@foxarias.com"
             style={{ color: 'var(--site-fg)', textDecoration: 'underline', textUnderlineOffset: '4px' }}
           >
             Write me.
@@ -58,13 +58,12 @@ export default function Footer() {
       >
         <div>
           <div style={columnLabel}>Location;</div>
-          <div style={columnValue}>Between Barcelona, ES</div>
-          <div style={columnValue}>and Brooklyn, New York.</div>
+          <div style={columnValue}>Remote</div>
         </div>
 
         <div>
           <div style={columnLabel}>Contact;</div>
-          <a href="mailto:bellaarias@gmail.com" style={columnLink}>bellaarias@gmail.com</a>
+          <a href="mailto:isabella@foxarias.com" style={columnLink}>isabella@foxarias.com</a>
         </div>
 
         <div>
