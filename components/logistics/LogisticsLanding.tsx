@@ -1,10 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Nav from '@/components/Nav'
-import { motion } from 'framer-motion'
 import Footer from '@/components/Footer'
 import { LOGISTICS_CONTENT } from '@/components/siteContent'
+import LogisticsHeader from './LogisticsHeader'
 import LogisticsHero from './LogisticsHero'
 import LogisticsSlideshow from './LogisticsSlideshow'
 import ProblemAccordion from './ProblemAccordion'
@@ -19,23 +18,20 @@ const darkTokens = {
   color: '#ffffff',
 } as React.CSSProperties
 
-// Same load sequence as the homepage: the name and tagline type out first,
-// then the hero block and slideshow open up. Typing runs faster than the
-// homepage (30ms vs 60ms per character) because this tagline is more than
-// twice as long, and the reveal waits for it to finish.
-const TYPE_MS = 30
-const REVEAL_MS = LOGISTICS_CONTENT.tagline.length * TYPE_MS + 500
+const SEEN_KEY = 'lg-hero-seen'
 
 export default function LogisticsLanding() {
-  const [infoInView, setInfoInView] = useState(true)
-  const [revealed, setRevealed] = useState(false)
-  const infoRef = useRef<HTMLDivElement>(null)
+  const [heroInView, setHeroInView] = useState(true)
+  // The entrance plays once per visitor. Reduced motion and repeat visits see
+  // everything immediately. Add ?replay to the URL to see it again.
+  const [animate, setAnimate] = useState(true)
+  const heroRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const el = infoRef.current
+    const el = heroRef.current
     if (!el) return
     const observer = new IntersectionObserver(
-      ([entry]) => setInfoInView(entry.isIntersecting),
+      ([entry]) => setHeroInView(entry.isIntersecting),
       { threshold: 0 }
     )
     observer.observe(el)
@@ -43,31 +39,25 @@ export default function LogisticsLanding() {
   }, [])
 
   useEffect(() => {
-    const timeout = setTimeout(() => setRevealed(true), REVEAL_MS)
-    return () => clearTimeout(timeout)
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let seen = false
+    try { seen = window.localStorage.getItem(SEEN_KEY) === '1' } catch {}
+    const replay = window.location.search.includes('replay')
+    if (reduced || (seen && !replay)) {
+      setAnimate(false)
+      return
+    }
+    try { window.localStorage.setItem(SEEN_KEY, '1') } catch {}
   }, [])
 
   return (
-    <main className="lg-page" style={darkTokens}>
-      <div className="mobile-hero-stack">
-        <Nav content={LOGISTICS_CONTENT} revealed={revealed} infoInView={infoInView} typeSpeedMs={TYPE_MS} showMobileMeta={false} />
-        <motion.div
-          ref={infoRef}
-          initial={{ height: 0 }}
-          animate={{ height: revealed ? 'auto' : 0 }}
-          transition={{ duration: 1, ease: 'easeInOut' }}
-          style={{ overflow: 'hidden' }}
-        >
-          <LogisticsHero content={LOGISTICS_CONTENT} />
-        </motion.div>
-        <motion.div
-          className="slideshow-motion-wrapper"
-          initial={{ marginTop: 0 }}
-          animate={{ marginTop: revealed ? '80px' : 0 }}
-          transition={{ duration: 1, ease: 'easeInOut' }}
-        >
-          {revealed ? <LogisticsSlideshow /> : <div className="lg-slideshow" aria-hidden />}
-        </motion.div>
+    <main className={`lg-page${animate ? ' lg-enter' : ''}`} style={darkTokens}>
+      <LogisticsHeader content={LOGISTICS_CONTENT} showEmail={!heroInView} />
+      <div ref={heroRef}>
+        <LogisticsHero content={LOGISTICS_CONTENT} />
+      </div>
+      <div className="lg-slideshow-wrap">
+        <LogisticsSlideshow />
       </div>
       <ProblemAccordion />
       <Footer />

@@ -16,7 +16,7 @@ export interface SiteContent {
   // Omit to drop the "What I'm up to" column entirely.
   upTo?: UpToItem[]
   // Structured intro for pages that lead with a headline (logistics page).
-  hero?: { headline: string; body: string[]; proof: string }
+  hero?: { intro: string; headline: string; offer: string; body: string; experienceLabel: string; proof: string; invitation: string }
 }
 
 const LINKEDIN = 'https://www.linkedin.com/in/isabella-fox-arias-20b1a0145/'
@@ -47,28 +47,26 @@ export const HOME_CONTENT: SiteContent = {
   ],
 }
 
-// Logistics landing page (/work/fcc). Copy supplied by Isabella, 11 Nov 2026.
-// The intro is split into headline / body / proof for the page hero. `about`
-// (used by the nav hover dropdown) rejoins the same words in the original two
-// paragraphs, so the wording lives in one place.
+// Logistics landing page (/work/fcc). Copy supplied by Isabella, 12 Nov 2026.
+// Reading order: who I am (intro, in the header) -> what I understand
+// (headline) -> what I take responsibility for (offer) -> why (body) ->
+// relevant experience (proof) -> next step (invitation + email).
 const LOGISTICS_HERO = {
+  intro: 'I’m Isabella Fox Arias, a UX/UI consultant for fleet and logistics software companies.',
   headline: 'Fleet software has to work at the desk and in the field.',
-  body: [
-    'As products grow, decisions that made sense for one feature can create inconsistencies across the platform. Office staff develop workarounds, field users struggle with screens built for a desktop, and each new feature becomes harder to fit into the existing system.',
-    'I work with founders and product leaders to untangle those problems and turn them into clear priorities, usable designs, and working prototypes.',
-  ],
-  proof: 'My experience includes restructuring Fleet Cost & Care’s 20+ year-old platform, accounting for both longtime users and people learning it for the first time.',
+  offer: 'I work with founders and product leaders to solve complex product problems, from deciding what needs to change to designing and building the solution.',
+  body: 'As products grow, decisions that made sense for one feature can create inconsistencies across the platform. Office staff develop workarounds, field users struggle with screens built for a desktop, and each new feature becomes harder to fit into the existing system.',
+  experienceLabel: 'Relevant experience',
+  proof: 'I restructured Fleet Cost & Care’s 20+ year-old platform, accounting for both experienced users and people learning it for the first time.',
+  invitation: 'Have a product challenge?',
 }
 
 export const LOGISTICS_CONTENT: SiteContent = {
-  tagline: 'Isabella Fox Arias is a UX/UI consultant for fleet and logistics software.',
+  tagline: LOGISTICS_HERO.intro,
   hero: LOGISTICS_HERO,
-  about: [
-    `${LOGISTICS_HERO.headline} ${LOGISTICS_HERO.body[0]}`,
-    `${LOGISTICS_HERO.body[1]} ${LOGISTICS_HERO.proof}`,
-  ],
+  about: [], // unused: the logistics page has its own header and hero
   location: ['Remote'],
-  contactPrompt: ['Have a product challenge?'],
+  contactPrompt: [LOGISTICS_HERO.invitation],
   email: 'isabella@foxarias.com',
   linkedinHref: LINKEDIN,
   skills: [

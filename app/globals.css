@@ -299,14 +299,15 @@ a:hover {
 }
 
 /* ── Logistics landing page (/work/fcc) ─────────────────────────────────── */
-.lg-slideshow { position: relative; display: flex; flex-direction: column; height: calc(100vh - 48px); }
+.lg-slideshow { position: relative; display: flex; flex-direction: column; }
+.lg-slideshow-wrap { margin-top: 64px; }
 .lg-slideshow-caption {
   display: flex; justify-content: space-between; align-items: flex-end;
   padding: 0 var(--page-padding) 12px; background-color: var(--site-bg);
 }
 .lg-stage {
-  flex: 1; min-height: 0; margin-inline: var(--page-padding);
-  background-color: #0a0d0c; border-radius: 8px;
+  height: min(56vw, 760px); margin-inline: var(--page-padding);
+  background-color: var(--lg-stage-bg, #0a0d0c); border-radius: 8px;
   display: flex; align-items: center; justify-content: center; padding: 32px;
   overflow: hidden;
 }
@@ -332,7 +333,7 @@ a:hover {
 }
 .lg-col-num { grid-column: 1 / 2; }
 .lg-col-problem {
-  grid-column: 2 / 9; margin: 0; font-size: 28px; line-height: 34px; font-weight: 500;
+  grid-column: 2 / 9; margin: 0; font-size: 36px; line-height: 42px; font-weight: 500;
   letter-spacing: -0.02em; transition: color 0.4s ease;
 }
 .lg-col-tag { grid-column: 9 / 12; }
@@ -349,13 +350,13 @@ a:hover {
 .lg-caption { display: flex; gap: 16px; align-items: baseline; padding-top: 12px; }
 
 @media (max-width: 1024px) {
-  .lg-slideshow { height: auto; }
-  .lg-stage { aspect-ratio: 1 / 1; padding: 16px; }
+  .lg-slideshow-wrap { margin-top: 40px; }
+  .lg-stage { height: auto; aspect-ratio: 1 / 1; padding: 16px; }
   .lg-accordion { padding-top: 80px; }
   .lg-row-header { position: static; }
   .lg-row-header-grid { grid-template-columns: 32px 1fr auto; row-gap: 4px; }
   .lg-col-num { grid-column: 1; }
-  .lg-col-problem { grid-column: 2 / 4; font-size: 22px; line-height: 28px; }
+  .lg-col-problem { grid-column: 2 / 4; font-size: 24px; line-height: 30px; }
   .lg-col-tag { grid-column: 2; }
   .lg-col-step { grid-column: 3; }
   .lg-row-body { grid-template-columns: 1fr; padding-block: 24px 64px; row-gap: 32px; }
@@ -368,44 +369,61 @@ a:hover {
 /* ── Logistics hero ──────────────────────────────────────────────────────── */
 .lg-hero {
   padding-inline: var(--page-padding);
-  padding-top: 64px; padding-bottom: 40px;
+  padding-top: 64px; padding-bottom: 0;
   display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  column-gap: 64px; row-gap: 48px; align-items: start;
+  column-gap: 64px; row-gap: 32px; align-items: start;
 }
 .lg-hero-intro { grid-column: 1; grid-row: 1; }
 .lg-hero-services { grid-column: 2; grid-row: 1 / span 2; }
 .lg-hero-contact { grid-column: 1; grid-row: 2; }
 .lg-hero-headline {
   margin: 0; max-width: 750px; font-size: 48px; line-height: 52px;
-  font-weight: 500; letter-spacing: -0.025em; color: var(--site-fg);
+  font-weight: 500; letter-spacing: -0.025em; color: var(--site-fg); text-wrap: balance;
 }
-.lg-hero-body { margin-top: 32px; max-width: 680px; }
-.lg-hero-body p, .lg-hero-proof { margin: 0; font-size: 18px; line-height: 28px; font-weight: 400; }
-.lg-hero-body p { color: rgba(255, 255, 255, 0.75); }
-.lg-hero-body p + p { margin-top: 16px; }
-.lg-hero-proof { margin-top: 24px; max-width: 680px; color: var(--site-fg); }
-/* The nav shows this label above the column on wide screens; elsewhere the hero shows it. */
-.lg-hero-label { display: none; font-size: 12px; line-height: 16px; font-weight: 500; text-transform: uppercase; color: var(--site-fg-muted); margin-bottom: 16px; }
+.lg-hero-offer {
+  margin: 32px 0 0; max-width: 760px; font-size: 20px; line-height: 30px;
+  font-weight: 500; color: var(--site-fg);
+}
+.lg-hero-body {
+  margin: 16px 0 0; max-width: 760px; font-size: 20px; line-height: 30px;
+  font-weight: 400; color: rgba(255, 255, 255, 0.7);
+}
+.lg-hero-proof { margin-top: 32px; max-width: 760px; }
+.lg-hero-proof p { margin: 0; font-size: 20px; line-height: 30px; font-weight: 400; color: var(--site-fg); }
+.lg-hero-label {
+  font-size: 12px; line-height: 16px; font-weight: 500; text-transform: uppercase;
+  color: var(--site-fg-muted); margin-bottom: 8px;
+}
+.lg-hero-services .lg-hero-label { margin-bottom: 16px; }
 .lg-hero-services ul { list-style: none; margin: 0; padding: 0; }
 .lg-hero-services li { font-size: 18px; line-height: 28px; color: var(--site-fg); }
-.lg-hero-contact { display: flex; gap: 64px; font-size: 16px; line-height: 24px; color: var(--site-fg); }
-.lg-hero-contact a { display: block; color: var(--site-fg); text-decoration: underline; text-underline-offset: 3px; }
+.lg-hero-invite { font-size: 16px; line-height: 24px; color: var(--site-fg); }
+.lg-hero-email {
+  display: inline-block; margin-top: 4px; font-size: 24px; line-height: 32px; font-weight: 500;
+  color: var(--site-fg); text-decoration: underline; text-underline-offset: 5px;
+  text-decoration-thickness: 1px;
+}
+.lg-hero-email:hover { text-decoration-thickness: 2px; }
+.lg-hero-support { display: flex; gap: 24px; margin-top: 12px; font-size: 14px; line-height: 20px; color: var(--site-fg-muted); }
+.lg-hero-support a { color: var(--site-fg-muted); text-decoration: underline; text-underline-offset: 3px; }
+.lg-hero-support a:hover { color: var(--site-fg); }
+
+/* Entrance: headline 0ms, offer 150ms, explanation + experience 300ms,
+   services + contact 600ms; each 300ms with at most 8px of movement, so the
+   whole sequence is done by 900ms. Space is reserved (opacity/transform only).
+   Off for reduced motion and repeat visits (class removed in LogisticsLanding). */
+@keyframes lg-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.lg-enter .lg-e { animation: lg-in 300ms ease-out both; animation-delay: var(--d, 0ms); }
+@media (prefers-reduced-motion: reduce) { .lg-enter .lg-e { animation: none; } }
 
 @media (max-width: 1024px) {
-  .lg-hero { grid-template-columns: 1fr; row-gap: 40px; padding-top: 24px; }
+  .lg-hero { grid-template-columns: 1fr; row-gap: 32px; padding-top: 24px; }
   .lg-hero-intro, .lg-hero-services, .lg-hero-contact { grid-column: 1; grid-row: auto; }
   .lg-hero-headline { font-size: 32px; line-height: 36px; }
-  .lg-hero-body { margin-top: 24px; }
-  .lg-hero-body p, .lg-hero-proof, .lg-hero-services li { font-size: 17px; line-height: 26px; }
-  .lg-hero-contact { gap: 40px; flex-wrap: wrap; }
+  .lg-hero-offer { margin-top: 24px; }
+  .lg-hero-offer, .lg-hero-body, .lg-hero-proof p { font-size: 18px; line-height: 28px; }
 }
 
-@media (max-width: 1210px) {
-  .lg-hero-label { display: block; }
-}
-/* The tagline is long: between 1025px and 1210px it would run into the nav's
-   (CONTACT) and (WHAT I CAN DO) labels, so those are dropped in that range
-   (the hero and footer carry the same information). */
-@media (min-width: 1025px) and (max-width: 1210px) {
-  .lg-page .nav-desktop-header > div:not(:first-child) { display: none !important; }
-}
+/* Logistics header: solid so page content never shows through when sticky. */
+.lg-page .nav-desktop-header { background-color: #000000; }
+.lg-slideshow-caption { gap: 8px 16px; flex-wrap: wrap; }
