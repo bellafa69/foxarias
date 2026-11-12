@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 import Footer from '@/components/Footer'
 import { LOGISTICS_CONTENT } from '@/components/siteContent'
 import LogisticsHeader from './LogisticsHeader'
@@ -19,12 +20,15 @@ const darkTokens = {
 } as React.CSSProperties
 
 const SEEN_KEY = 'lg-hero-seen'
+const HOLD_MS = 1500
 
 export default function LogisticsLanding() {
   const [heroInView, setHeroInView] = useState(true)
-  // The entrance plays once per visitor. Reduced motion and repeat visits see
-  // everything immediately. Add ?replay to the URL to see it again.
-  const [animate, setAnimate] = useState(true)
+  // Load sequence: the slideshow fills the screen for HOLD_MS, then the intro
+  // opens above it and pushes it down. Reduced motion, repeat visits and
+  // phones go straight to the final layout. Add ?replay to see it again.
+  const [revealed, setRevealed] = useState(false)
+  const [instant, setInstant] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -40,25 +44,39 @@ export default function LogisticsLanding() {
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const phone = window.matchMedia('(max-width: 1024px)').matches
     let seen = false
     try { seen = window.localStorage.getItem(SEEN_KEY) === '1' } catch {}
     const replay = window.location.search.includes('replay')
-    if (reduced || (seen && !replay)) {
-      setAnimate(false)
+    if (reduced || phone || (seen && !replay)) {
+      setInstant(true)
+      setRevealed(true)
       return
     }
     try { window.localStorage.setItem(SEEN_KEY, '1') } catch {}
+    const timeout = setTimeout(() => setRevealed(true), HOLD_MS)
+    return () => clearTimeout(timeout)
   }, [])
 
   return (
-    <main className={`lg-page${animate ? ' lg-enter' : ''}`} style={darkTokens}>
-      <LogisticsHeader content={LOGISTICS_CONTENT} showEmail={!heroInView} />
-      <div ref={heroRef}>
-        <LogisticsHero content={LOGISTICS_CONTENT} />
-      </div>
-      <div className="lg-slideshow-wrap">
-        <LogisticsSlideshow />
-      </div>
+    <main className="lg-page" style={darkTokens}>
+      <LogisticsHeader content={LOGISTICS_CONTENT} showEmail={revealed && !heroInView} />
+      <motion.div
+        ref={heroRef}
+        initial={{ height: 0 }}
+        animate={{ height: revealed ? 'auto' : 0 }}
+        transition={{ duration: instant ? 0 : 1, ease: 'easeInOut' }}
+        style={{ overflow: 'hidden' }}
+      >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: revealed ? 1 : 0 }}
+          transition={{ duration: instant ? 0 : 0.6, delay: instant ? 0 : 0.35 }}
+        >
+          <LogisticsHero content={LOGISTICS_CONTENT} />
+        </motion.div>
+      </motion.div>
+      <LogisticsSlideshow autoplay={revealed} />
       <ProblemAccordion />
       <Footer />
     </main>

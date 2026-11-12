@@ -16,7 +16,7 @@ const labelBase: React.CSSProperties = {
 // Hero slideshow for the logistics page. Same caption strip and counter as the
 // homepage slideshow, but screens sit straight on a plain dark stage: no
 // background art, contained at their natural ratio, with a hairline edge.
-export default function LogisticsSlideshow() {
+export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boolean }) {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
   const [userPaused, setUserPaused] = useState(false)
@@ -32,12 +32,12 @@ export default function LogisticsSlideshow() {
   }, [])
 
   useEffect(() => {
-    if (paused || userPaused) return
+    if (!autoplay || paused || userPaused) return
     const id = setInterval(() => {
       if (!reducedMotion.current) go(1)
     }, AUTOPLAY_MS)
     return () => clearInterval(id)
-  }, [paused, userPaused, index, go])
+  }, [autoplay, paused, userPaused, index, go])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
