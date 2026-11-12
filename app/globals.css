@@ -406,9 +406,11 @@ a:hover {
 .lg-hero-services ul { list-style: none; margin: 0; padding: 0; }
 .lg-hero-services li { color: rgba(255, 255, 255, 0.85); }
 
-.lg-intro { padding: 96px var(--page-padding) 0; }
-.lg-intro p { margin: 0; max-width: 560px; font-size: 14px; line-height: 22px; color: rgba(255, 255, 255, 0.78); }
-.lg-accordion { padding-top: 80px; }
+/* A section of its own between the slideshow and the problems: headline size,
+   regular weight, bright, with generous space above and below. */
+.lg-intro { padding: 192px var(--page-padding) 176px; }
+.lg-intro p { margin: 0; max-width: 1100px; font-size: 36px; line-height: 46px; font-weight: 400; letter-spacing: -0.015em; color: rgba(255, 255, 255, 0.92); text-wrap: pretty; }
+.lg-accordion { padding-top: 0; }
 
 @media (max-width: 1240px) {
   .lg-hero-contact { grid-column: 7 / 10; }
@@ -421,5 +423,6 @@ a:hover {
   .lg-hero-offer { margin-top: 16px; font-size: 16px; line-height: 24px; }
   .lg-hero-proof { margin-top: 24px; }
   .lg-hero-services, .lg-hero-contact { margin-top: 24px; }
-  .lg-intro { padding-top: 56px; }
+  .lg-intro { padding: 96px var(--page-padding) 80px; }
+  .lg-intro p { font-size: 24px; line-height: 32px; }
 }
