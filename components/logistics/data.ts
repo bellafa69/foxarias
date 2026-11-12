@@ -9,7 +9,7 @@ export const SHOW_PLACEHOLDER_MARKERS = false
 
 // Hidden for now. Set to true to show the "Independent concept" labels again
 // (slideshow caption and the caption under each problem screen).
-export const SHOW_CONCEPT_LABELS = true
+export const SHOW_CONCEPT_LABELS = false
 
 // Slideshow caption. The six screens are independent concepts, not delivered
 // FCC work. Isabella writes the concepts' own project title and one line on

@@ -17,7 +17,7 @@ export default function LogisticsHeader({ content }: { content: SiteContent }) {
         <a
           className="lg-header-email"
           href={`mailto:${content.email}`}
-          style={{ gridColumn: '10 / 13', justifySelf: 'end', fontSize: '14px', lineHeight: '20px', fontWeight: 400 }}
+          style={{ gridColumn: '10 / 13', justifySelf: 'end', fontSize: '17px', lineHeight: '26px', fontWeight: 400 }}
         >
           {content.email}
         </a>
@@ -31,7 +31,7 @@ export default function LogisticsHeader({ content }: { content: SiteContent }) {
           FOX ARIAS
         </Link>
         <div style={{ fontSize: '17px', lineHeight: '26px', fontWeight: 400, color: 'var(--site-fg)' }}>{content.tagline}</div>
-        <a className="lg-header-email" href={`mailto:${content.email}`} style={{ display: 'inline-block', marginTop: '4px', fontSize: '14px', lineHeight: '20px' }}>{content.email}</a>
+        <a className="lg-header-email" href={`mailto:${content.email}`} style={{ display: 'inline-block', marginTop: '4px', fontSize: '17px', lineHeight: '26px' }}>{content.email}</a>
       </div>
     </>
   )
