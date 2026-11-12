@@ -40,11 +40,10 @@ export interface HeroSlide {
 // slides show the full screens, large.
 export const HERO_SLIDES: HeroSlide[] = [
   { id: 'h5', kind: 'image', src: `${base}/hero-5-scheduling-conflicts-hr.webp`, width: 2400, height: 1733, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'Weekly schedule with two flagged equipment and crew conflicts' },
-  { id: 'h1', kind: 'video', src: `${base}/hero-1-recording.mp4`, poster: `${base}/hero-1-recording-poster.webp`, width: 2400, height: 2000, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A technician records a repair by voice and the work order fills in' },
-  { id: 'h4', kind: 'image', src: `${base}/hero-4-morning-brief-hr.webp`, width: 2400, height: 2750, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A morning brief with three priorities above a work queue' },
+  { id: 'h4', kind: 'image', src: `${base}/hero-4-morning-brief-wide-hr.webp`, width: 2400, height: 1733, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A morning brief with three priorities above a work queue' },
   { id: 'h2', kind: 'video', src: `${base}/hero-2-photo-scan.mp4`, poster: `${base}/hero-2-photo-scan-poster.webp`, width: 2400, height: 2000, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A photo of a part is scanned and read into the work order' },
-  { id: 'h6', kind: 'image', src: `${base}/hero-6-edit-work-order-hr.webp`, width: 2400, height: 1647, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A work order edit panel open over the board' },
   { id: 'h3', kind: 'image', src: `${base}/hero-3-review-attachments-hr.webp`, width: 2400, height: 2071, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'Chat on the left and the draft work order with a flagged detail on the right' },
+  { id: 'h6', kind: 'image', src: `${base}/hero-6-edit-work-order-hr.webp`, width: 2400, height: 1647, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A work order edit panel open over the board' },
 ]
 
 export interface RowImage {
@@ -94,12 +93,12 @@ export const PROBLEM_ROWS: ProblemRow[] = [
       { heading: 'Why', text: 'When technicians can finish reporting on site, there’s less reason to keep paper notes for someone to enter later.' },
     ],
     images: [],
-    // One flow, four beats. Each plays when it scrolls into view. Captions are placeholders.
+    // One flow, four beats: record a voice note, save it offline, upload it. Each plays when it scrolls into view. Captions are placeholders.
     clips: [
-      { src: `${base}/p1-beat-1-offline.mp4`, poster: `${base}/p1-beat-1-offline-poster.webp`, width: 2000, height: 1250, caption: 'Report saved on the device when there is no signal.' },
-      { src: `${base}/p1-beat-2-signal.mp4`, poster: `${base}/p1-beat-2-signal-poster.webp`, width: 2000, height: 1250, caption: 'Signal returns and the report starts sending.' },
-      { src: `${base}/p1-beat-3-sent.mp4`, poster: `${base}/p1-beat-3-sent-poster.webp`, width: 2000, height: 1250, caption: 'Delivered, with nothing entered twice.' },
-      { src: `${base}/p1-beat-4-office.mp4`, poster: `${base}/p1-beat-4-office-poster.webp`, width: 2000, height: 1250, caption: 'It lands in the office queue.' },
+      { src: `${base}/p1-voice-1-record.mp4`, poster: `${base}/p1-voice-1-record-poster.webp`, width: 2000, height: 1250, caption: 'A technician records a voice note on site.' },
+      { src: `${base}/p1-voice-2-saved.mp4`, poster: `${base}/p1-voice-2-saved-poster.webp`, width: 2000, height: 1250, caption: 'With no signal, the note is saved on the device.' },
+      { src: `${base}/p1-voice-3-upload.mp4`, poster: `${base}/p1-voice-3-upload-poster.webp`, width: 2000, height: 1250, caption: 'When signal returns, it uploads on its own.' },
+      { src: `${base}/p1-voice-4-uploaded.mp4`, poster: `${base}/p1-voice-4-uploaded-poster.webp`, width: 2000, height: 1250, caption: 'The note is uploaded and ready for the office.' },
     ],
   },
   {
