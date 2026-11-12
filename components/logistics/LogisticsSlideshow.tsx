@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { AnimatePresence, motion } from 'framer-motion'
 import { CONCEPT_NOTE, CONCEPT_TITLE, HERO_SLIDES, SHOW_CONCEPT_LABELS } from './data'
 
 const AUTOPLAY_MS = 6000
@@ -76,14 +75,9 @@ export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boo
       </div>
 
       <div className="lg-stage">
-        <AnimatePresence initial={false}>
-        <motion.div
+        <div
           className="lg-screen lg-screen-desktop"
           key={slide.id}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
           style={{ '--r': slide.width / slide.height } as React.CSSProperties}
         >
           {slide.kind === 'video' ? (
@@ -109,8 +103,7 @@ export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boo
               style={{ width: '100%', height: '100%', display: 'block' }}
             />
           )}
-        </motion.div>
-        </AnimatePresence>
+        </div>
       </div>
 
       {/* Warm the next still so the swap doesn't flash. */}
