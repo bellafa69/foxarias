@@ -15,6 +15,8 @@ export interface SiteContent {
   mobileSkills: string[]
   // Omit to drop the "What I'm up to" column entirely.
   upTo?: UpToItem[]
+  // Structured intro for pages that lead with a headline (logistics page).
+  hero?: { headline: string; body: string[]; proof: string }
 }
 
 const LINKEDIN = 'https://www.linkedin.com/in/isabella-fox-arias-20b1a0145/'
@@ -46,11 +48,24 @@ export const HOME_CONTENT: SiteContent = {
 }
 
 // Logistics landing page (/work/fcc). Copy supplied by Isabella, 11 Nov 2026.
+// The intro is split into headline / body / proof for the page hero. `about`
+// (used by the nav hover dropdown) rejoins the same words in the original two
+// paragraphs, so the wording lives in one place.
+const LOGISTICS_HERO = {
+  headline: 'Fleet software has to work at the desk and in the field.',
+  body: [
+    'As products grow, decisions that made sense for one feature can create inconsistencies across the platform. Office staff develop workarounds, field users struggle with screens built for a desktop, and each new feature becomes harder to fit into the existing system.',
+    'I work with founders and product leaders to untangle those problems and turn them into clear priorities, usable designs, and working prototypes.',
+  ],
+  proof: 'My experience includes restructuring Fleet Cost & Care’s 20+ year-old platform, accounting for both longtime users and people learning it for the first time.',
+}
+
 export const LOGISTICS_CONTENT: SiteContent = {
   tagline: 'Isabella Fox Arias is a UX/UI consultant for fleet and logistics software.',
+  hero: LOGISTICS_HERO,
   about: [
-    'Fleet software has to work at the desk and in the field. As products grow, decisions that made sense for one feature can create inconsistencies across the platform. Office staff develop workarounds, field users struggle with screens built for a desktop, and each new feature becomes harder to fit into the existing system.',
-    'I work with founders and product leaders to untangle those problems and turn them into clear priorities, usable designs, and working prototypes. My experience includes restructuring Fleet Cost & Care’s 20+ year-old platform, accounting for both longtime users and people learning it for the first time.',
+    `${LOGISTICS_HERO.headline} ${LOGISTICS_HERO.body[0]}`,
+    `${LOGISTICS_HERO.body[1]} ${LOGISTICS_HERO.proof}`,
   ],
   location: ['Remote'],
   contactPrompt: ['Have a product challenge?'],

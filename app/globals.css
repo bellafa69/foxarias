@@ -364,3 +364,48 @@ a:hover {
   .lg-figures { gap: 48px; }
   .lg-screen-mobile { width: min(100%, 260px); }
 }
+
+/* ── Logistics hero ──────────────────────────────────────────────────────── */
+.lg-hero {
+  padding-inline: var(--page-padding);
+  padding-top: 64px; padding-bottom: 40px;
+  display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  column-gap: 64px; row-gap: 48px; align-items: start;
+}
+.lg-hero-intro { grid-column: 1; grid-row: 1; }
+.lg-hero-services { grid-column: 2; grid-row: 1 / span 2; }
+.lg-hero-contact { grid-column: 1; grid-row: 2; }
+.lg-hero-headline {
+  margin: 0; max-width: 750px; font-size: 48px; line-height: 52px;
+  font-weight: 500; letter-spacing: -0.025em; color: var(--site-fg);
+}
+.lg-hero-body { margin-top: 32px; max-width: 680px; }
+.lg-hero-body p, .lg-hero-proof { margin: 0; font-size: 18px; line-height: 28px; font-weight: 400; }
+.lg-hero-body p { color: rgba(255, 255, 255, 0.75); }
+.lg-hero-body p + p { margin-top: 16px; }
+.lg-hero-proof { margin-top: 24px; max-width: 680px; color: var(--site-fg); }
+/* The nav shows this label above the column on wide screens; elsewhere the hero shows it. */
+.lg-hero-label { display: none; font-size: 12px; line-height: 16px; font-weight: 500; text-transform: uppercase; color: var(--site-fg-muted); margin-bottom: 16px; }
+.lg-hero-services ul { list-style: none; margin: 0; padding: 0; }
+.lg-hero-services li { font-size: 18px; line-height: 28px; color: var(--site-fg); }
+.lg-hero-contact { display: flex; gap: 64px; font-size: 16px; line-height: 24px; color: var(--site-fg); }
+.lg-hero-contact a { display: block; color: var(--site-fg); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 1024px) {
+  .lg-hero { grid-template-columns: 1fr; row-gap: 40px; padding-top: 24px; }
+  .lg-hero-intro, .lg-hero-services, .lg-hero-contact { grid-column: 1; grid-row: auto; }
+  .lg-hero-headline { font-size: 32px; line-height: 36px; }
+  .lg-hero-body { margin-top: 24px; }
+  .lg-hero-body p, .lg-hero-proof, .lg-hero-services li { font-size: 17px; line-height: 26px; }
+  .lg-hero-contact { gap: 40px; flex-wrap: wrap; }
+}
+
+@media (max-width: 1210px) {
+  .lg-hero-label { display: block; }
+}
+/* The tagline is long: between 1025px and 1210px it would run into the nav's
+   (CONTACT) and (WHAT I CAN DO) labels, so those are dropped in that range
+   (the hero and footer carry the same information). */
+@media (min-width: 1025px) and (max-width: 1210px) {
+  .lg-page .nav-desktop-header > div:not(:first-child) { display: none !important; }
+}

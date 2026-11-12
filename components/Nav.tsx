@@ -17,11 +17,13 @@ interface Props {
   showMobileMeta?: boolean
   // Hero copy. Defaults to the homepage copy.
   content?: SiteContent
+  // Milliseconds per character for the tagline typing. Homepage uses 60.
+  typeSpeedMs?: number
 }
 
 type Col = 'about' | 'contact' | 'skills' | 'upTo'
 
-export default function Nav({ infoInView = true, revealed = true, animateTagline = true, showMobileMeta = true, content = HOME_CONTENT }: Props) {
+export default function Nav({ infoInView = true, revealed = true, animateTagline = true, showMobileMeta = true, content = HOME_CONTENT, typeSpeedMs = 60 }: Props) {
   const TAGLINE = content.tagline
   const [tagline, setTagline] = useState(animateTagline ? '' : TAGLINE)
   const [activeCol, setActiveCol] = useState<Col | null>(null)
@@ -62,9 +64,9 @@ export default function Nav({ infoInView = true, revealed = true, animateTagline
       i++
       setTagline(TAGLINE.slice(0, i))
       if (i >= TAGLINE.length) clearInterval(interval)
-    }, 60)
+    }, typeSpeedMs)
     return () => clearInterval(interval)
-  }, [animateTagline, TAGLINE])
+  }, [animateTagline, TAGLINE, typeSpeedMs])
 
   useEffect(() => {
     if (infoInView) setActiveCol(null)
