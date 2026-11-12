@@ -36,13 +36,15 @@ export interface HeroSlide {
   alt: string
 }
 
+// Order alternates desk and field to match the headline. The three desktop
+// slides are cropped from the full screens to the part that carries the point.
 export const HERO_SLIDES: HeroSlide[] = [
-  { id: 'h5', kind: 'image', src: `${base}/hero-5-scheduling-conflicts-hr.webp`, width: 2400, height: 1733, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'Weekly schedule with two flagged conflicts' },
-  { id: 'h4', kind: 'image', src: `${base}/hero-4-morning-brief-hr.webp`, width: 2400, height: 2750, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'Operations dashboard with a morning brief and a prioritized work queue' },
-  { id: 'h6', kind: 'image', src: `${base}/hero-6-edit-work-order-hr.webp`, width: 2400, height: 1647, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'Work order board with an edit panel open' },
-  { id: 'h3', kind: 'image', src: `${base}/hero-3-review-attachments-hr.webp`, width: 2400, height: 2071, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'Chat on the left and the draft work order with a flagged detail on the right' },
+  { id: 'h5', kind: 'image', src: `${base}/hero-5-schedule-crop-hr.webp`, width: 2304, height: 751, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'Weekly schedule with two flagged equipment and crew conflicts' },
   { id: 'h1', kind: 'video', src: `${base}/hero-1-recording.mp4`, poster: `${base}/hero-1-recording-poster.webp`, width: 2400, height: 2000, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A technician records a repair by voice and the work order fills in' },
+  { id: 'h4', kind: 'image', src: `${base}/hero-4-morning-brief-crop-hr.webp`, width: 1557, height: 1224, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A morning brief with three priorities above a work queue' },
   { id: 'h2', kind: 'video', src: `${base}/hero-2-photo-scan.mp4`, poster: `${base}/hero-2-photo-scan-poster.webp`, width: 2400, height: 2000, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A photo of a part is scanned and read into the work order' },
+  { id: 'h6', kind: 'image', src: `${base}/hero-6-edit-work-order-crop-hr.webp`, width: 1574, height: 896, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'A work order edit panel open over the board' },
+  { id: 'h3', kind: 'image', src: `${base}/hero-3-review-attachments-hr.webp`, width: 2400, height: 2071, name: 'FLEET, COST & CARE', label: 'Independent concept', alt: 'Chat on the left and the draft work order with a flagged detail on the right' },
 ]
 
 export interface RowImage {

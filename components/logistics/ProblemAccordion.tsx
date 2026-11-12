@@ -80,7 +80,7 @@ function Row({ row }: { row: ProblemRow }) {
             {row.thinking.map(b => (
               <div key={b.heading} style={{ marginBottom: '24px' }}>
                 <div style={{ ...small, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--site-fg-muted)', marginBottom: '8px' }}>{b.heading}</div>
-                <p style={{ margin: 0, fontSize: 'max(12px, calc(16px * var(--ts)))', lineHeight: 'calc(24px * var(--ts))', fontWeight: 400 }}>{b.text}</p>
+                <p style={{ margin: 0, fontSize: '15px', lineHeight: '23px', fontWeight: 400 }}>{b.text}</p>
               </div>
             ))}
           </div>

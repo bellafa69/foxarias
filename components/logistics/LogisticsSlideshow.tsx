@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { CONCEPT_NOTE, CONCEPT_TITLE, HERO_SLIDES, SHOW_CONCEPT_LABELS } from './data'
 
 const AUTOPLAY_MS = 6000
+// Where the stage glow sits for each slide (x, y). It eases between them.
+const GLOW = [['24%', '24%'], ['76%', '30%'], ['30%', '76%'], ['72%', '70%'], ['22%', '50%'], ['80%', '26%']]
 
 const labelBase: React.CSSProperties = {
   fontSize: '12px',
@@ -74,11 +76,13 @@ export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boo
         </span>
       </div>
 
-      <div className="lg-stage">
+      <div className="lg-stage" style={{ '--gx': GLOW[index % GLOW.length][0], '--gy': GLOW[index % GLOW.length][1] } as React.CSSProperties}>
+        <div className="lg-stage-aurora" aria-hidden />
+        <div className="lg-stage-grain" aria-hidden />
         <div
           className="lg-screen lg-screen-desktop"
           key={slide.id}
-          style={{ aspectRatio: `${slide.width} / ${slide.height}` }}
+          style={{ '--r': slide.width / slide.height } as React.CSSProperties}
         >
           {slide.kind === 'video' ? (
             <video

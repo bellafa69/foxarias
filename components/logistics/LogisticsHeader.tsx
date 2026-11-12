@@ -3,27 +3,21 @@
 import Link from 'next/link'
 import type { SiteContent } from '@/components/siteContent'
 
-const navText: React.CSSProperties = { fontSize: 'max(12px, calc(17px * var(--ts)))', lineHeight: 'calc(26px * var(--ts))', fontWeight: 400, color: 'var(--site-fg)' }
-
-// Header for the logistics page: logo and one-line introduction, visible from
-// the first paint (no typing). Once the hero scrolls out of view, the email
-// appears on the right so the next step stays one click away.
-export default function LogisticsHeader({ content, showEmail }: { content: SiteContent; showEmail: boolean }) {
+// Header for the logistics page: logo and one-line introduction lead. The
+// email sits on the same line at the right, smaller and muted so it is always
+// there without competing. The header is sticky, so it stays on scroll.
+export default function LogisticsHeader({ content }: { content: SiteContent }) {
   return (
     <>
       <header className="nav-desktop-header">
-        <div style={{ gridColumn: '1 / 11', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <Link href="/" style={{ ...navText, fontWeight: 700, letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>FOX ARIAS</Link>
-          <span style={{ ...navText, whiteSpace: 'nowrap' }}>{content.tagline}</span>
+        <div style={{ gridColumn: '1 / 10', display: 'flex', alignItems: 'baseline', gap: '20px', minWidth: 0 }}>
+          <Link href="/" style={{ fontSize: '20px', lineHeight: '28px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)', whiteSpace: 'nowrap' }}>FOX ARIAS</Link>
+          <span style={{ fontSize: '17px', lineHeight: '26px', fontWeight: 400, color: 'var(--site-fg)', whiteSpace: 'nowrap' }}>{content.tagline}</span>
         </div>
         <a
+          className="lg-header-email"
           href={`mailto:${content.email}`}
-          tabIndex={showEmail ? 0 : -1}
-          style={{
-            gridColumn: '11 / 13', justifySelf: 'end', fontSize: 'max(12px, calc(17px * var(--ts)))', lineHeight: 'calc(26px * var(--ts))', fontWeight: 400,
-            color: 'var(--site-fg)', textDecoration: 'underline', textUnderlineOffset: '3px',
-            opacity: showEmail ? 1 : 0, pointerEvents: showEmail ? 'auto' : 'none', transition: 'opacity 0.2s ease',
-          }}
+          style={{ gridColumn: '10 / 13', justifySelf: 'end', fontSize: '14px', lineHeight: '20px', fontWeight: 400 }}
         >
           {content.email}
         </a>
@@ -33,10 +27,11 @@ export default function LogisticsHeader({ content, showEmail }: { content: SiteC
         className="nav-mobile-stack"
         style={{ paddingInline: 'var(--page-padding)', paddingTop: '16px', paddingBottom: '8px', backgroundColor: 'var(--site-bg)', color: 'var(--site-fg)' }}
       >
-        <Link href="/" style={{ display: 'block', fontSize: 'max(12px, calc(17px * var(--ts)))', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)', marginBottom: '4px' }}>
+        <Link href="/" style={{ display: 'block', fontSize: '20px', lineHeight: '28px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)' }}>
           FOX ARIAS
         </Link>
-        <div style={{ fontSize: 'max(12px, calc(17px * var(--ts)))', lineHeight: 'calc(26px * var(--ts))', fontWeight: 400, color: 'var(--site-fg)' }}>{content.tagline}</div>
+        <div style={{ fontSize: '17px', lineHeight: '26px', fontWeight: 400, color: 'var(--site-fg)' }}>{content.tagline}</div>
+        <a className="lg-header-email" href={`mailto:${content.email}`} style={{ display: 'inline-block', marginTop: '4px', fontSize: '14px', lineHeight: '20px' }}>{content.email}</a>
       </div>
     </>
   )

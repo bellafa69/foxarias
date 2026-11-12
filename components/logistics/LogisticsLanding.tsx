@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Footer from '@/components/Footer'
 import { LOGISTICS_CONTENT } from '@/components/siteContent'
 import LogisticsHeader from './LogisticsHeader'
-import LogisticsHero from './LogisticsHero'
+import LogisticsHero, { LogisticsDetails } from './LogisticsHero'
 import LogisticsSlideshow from './LogisticsSlideshow'
 import ProblemAccordion from './ProblemAccordion'
 
@@ -22,61 +22,40 @@ const darkTokens = {
 // Module-scoped: survives client-side navigation away from and back to this
 // page, but resets on a reload, so a reload always replays the sequence.
 let playedThisSession = false
-const HOLD_MS = 1500
 
+const EASE = [0.2, 0.7, 0.2, 1] as const
+
+// Load sequence: the headline and offer rise in, then the slideshow lifts in
+// beneath them and starts playing; the text band fades in as it scrolls into
+// view. Reduced motion and coming back within the same visit skip it.
 export default function LogisticsLanding() {
-  const [heroInView, setHeroInView] = useState(true)
-  // Load sequence: the slideshow fills the screen for HOLD_MS, then the intro
-  // opens above it and pushes it down. Reduced motion, phones and coming back
-  // to the page within the same visit go straight to the final layout.
-  const [revealed, setRevealed] = useState(false)
+  const [ready, setReady] = useState(false)
   const [instant, setInstant] = useState(false)
-  const heroRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const el = heroRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => setHeroInView(entry.isIntersecting),
-      { threshold: 0 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const phone = window.matchMedia('(max-width: 1024px)').matches
-    if (reduced || phone || playedThisSession) {
-      setInstant(true)
-      setRevealed(true)
-      return
-    }
-    // Flag after the hold, not before: React's dev double-run of effects would
-    // otherwise mark it played and skip the sequence.
-    const timeout = setTimeout(() => { playedThisSession = true; setRevealed(true) }, HOLD_MS)
-    return () => clearTimeout(timeout)
+    if (reduced || playedThisSession) setInstant(true)
+    // Flag after the sequence is set up, not before: React's dev double-run of
+    // effects would otherwise mark it played and skip it.
+    const t = setTimeout(() => { playedThisSession = true }, 1500)
+    setReady(true)
+    return () => clearTimeout(t)
   }, [])
+
+  const d = (delay: number) => ({ duration: instant ? 0 : 0.8, delay: instant ? 0 : delay, ease: EASE })
 
   return (
     <main className="lg-page" style={darkTokens}>
-      <LogisticsHeader content={LOGISTICS_CONTENT} showEmail={revealed && !heroInView} />
-      <motion.div
-        ref={heroRef}
-        initial={{ height: 0 }}
-        animate={{ height: revealed ? 'auto' : 0 }}
-        transition={{ duration: instant ? 0 : 1, ease: 'easeInOut' }}
-        style={{ overflow: 'hidden' }}
-      >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: revealed ? 1 : 0 }}
-          transition={{ duration: instant ? 0 : 0.6, delay: instant ? 0 : 0.35 }}
-        >
-          <LogisticsHero content={LOGISTICS_CONTENT} />
-        </motion.div>
+      <LogisticsHeader content={LOGISTICS_CONTENT} />
+      <motion.div initial={{ opacity: 0, y: 14 }} animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }} transition={d(0.05)}>
+        <LogisticsHero content={LOGISTICS_CONTENT} />
       </motion.div>
-      <LogisticsSlideshow autoplay={revealed} />
+      <motion.div initial={{ opacity: 0, y: 28 }} animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }} transition={d(0.35)}>
+        <LogisticsSlideshow autoplay={ready} />
+      </motion.div>
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: instant ? 0 : 0.7, ease: EASE }}>
+        <LogisticsDetails content={LOGISTICS_CONTENT} />
+      </motion.div>
       <ProblemAccordion />
       <Footer />
     </main>
