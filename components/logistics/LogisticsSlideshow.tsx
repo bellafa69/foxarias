@@ -2,11 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { AnimatePresence, motion } from 'framer-motion'
 import { CONCEPT_NOTE, CONCEPT_TITLE, HERO_SLIDES, SHOW_CONCEPT_LABELS } from './data'
 
 const AUTOPLAY_MS = 6000
-// Where the stage glow sits for each slide (x, y). It eases between them.
-const GLOW = [['24%', '24%'], ['76%', '30%'], ['30%', '76%'], ['72%', '70%'], ['22%', '50%'], ['80%', '26%']]
 
 const labelBase: React.CSSProperties = {
   fontSize: '12px',
@@ -68,20 +67,23 @@ export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boo
           {SHOW_CONCEPT_LABELS && CONCEPT_NOTE && <span style={{ color: 'var(--site-fg-muted)', whiteSpace: 'normal' }}>{CONCEPT_NOTE}</span>}
         </span>
         <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button type="button" aria-label="Previous slide" onClick={() => go(-1)} style={{ ...labelBase, color: 'var(--site-fg-muted)' }}>←</button>
-          <button type="button" aria-label="Next slide" onClick={() => go(1)} style={{ ...labelBase, color: 'var(--site-fg-muted)' }}>→</button>
-          <span style={{ ...labelBase, color: 'var(--site-fg-muted)' }} aria-live="polite">
+          <button type="button" className="lg-ctl" aria-label="Previous slide" onClick={() => go(-1)} style={{ ...labelBase, fontSize: '16px', lineHeight: '16px' }}>←</button>
+          <button type="button" className="lg-ctl" aria-label="Next slide" onClick={() => go(1)} style={{ ...labelBase, fontSize: '16px', lineHeight: '16px' }}>→</button>
+          <span style={{ ...labelBase, color: 'rgba(255, 255, 255, 0.8)' }} aria-live="polite">
             {index + 1} — {total}
           </span>
         </span>
       </div>
 
-      <div className="lg-stage" style={{ '--gx': GLOW[index % GLOW.length][0], '--gy': GLOW[index % GLOW.length][1] } as React.CSSProperties}>
-        <div className="lg-stage-aurora" aria-hidden />
-        <div className="lg-stage-grain" aria-hidden />
-        <div
+      <div className="lg-stage">
+        <AnimatePresence initial={false}>
+        <motion.div
           className="lg-screen lg-screen-desktop"
           key={slide.id}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
           style={{ '--r': slide.width / slide.height } as React.CSSProperties}
         >
           {slide.kind === 'video' ? (
@@ -107,7 +109,8 @@ export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boo
               style={{ width: '100%', height: '100%', display: 'block' }}
             />
           )}
-        </div>
+        </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Warm the next still so the swap doesn't flash. */}

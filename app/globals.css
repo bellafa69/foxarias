@@ -299,8 +299,6 @@ a:hover {
 }
 
 /* ── Logistics landing page (/work/fcc) ─────────────────────────────────── */
-@property --gx { syntax: '<percentage>'; inherits: false; initial-value: 25%; }
-@property --gy { syntax: '<percentage>'; inherits: false; initial-value: 20%; }
 .lg-slideshow {
   position: relative; display: flex; flex-direction: column;
   --sh: max(620px, calc(100svh - 280px)); --ih: calc(var(--sh) - 84px);
@@ -310,52 +308,25 @@ a:hover {
   display: flex; justify-content: space-between; align-items: flex-end;
   padding: 0 var(--page-padding) 12px; background-color: var(--site-bg);
 }
-/* Stage: layered green. A glow that follows the slide (--gx/--gy, set per
-   slide and eased), a slow drifting aurora, a cool teal corner, fine grain,
-   a top highlight and a hairline edge. All of it stays darker than the screens. */
+/* Stage: one muted deep green, two closely related tones, completely still.
+   Only the screen moves, and only when the slide changes. */
 .lg-stage {
-  position: relative; isolation: isolate; flex: 1; min-height: 0; margin-inline: var(--page-padding);
-  background:
-    radial-gradient(70% 90% at var(--gx) var(--gy), rgba(64, 168, 124, 0.5) 0%, rgba(40, 110, 82, 0.22) 38%, transparent 72%),
-    radial-gradient(55% 70% at 100% 100%, rgba(22, 96, 96, 0.5) 0%, transparent 70%),
-    linear-gradient(160deg, #123a2a 0%, #0d2b20 48%, #081a13 100%);
-  transition: --gx 1.4s cubic-bezier(.4,0,.2,1), --gy 1.4s cubic-bezier(.4,0,.2,1);
-  border-radius: 16px; border: 1px solid rgba(120, 210, 165, 0.16);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  display: flex; align-items: center; justify-content: center; padding: 28px;
-  overflow: hidden;
+  flex: 1; min-height: 0; margin-inline: var(--page-padding);
+  background: linear-gradient(160deg, #164037 0%, #123830 100%);
+  border-radius: 8px;
+  display: grid; place-items: center; padding: 28px; overflow: hidden;
 }
-.lg-stage-aurora {
-  position: absolute; inset: -25%; z-index: -1; pointer-events: none;
-  background:
-    radial-gradient(34% 38% at 28% 32%, rgba(110, 220, 170, 0.22), transparent 70%),
-    radial-gradient(30% 36% at 72% 66%, rgba(60, 170, 150, 0.2), transparent 70%),
-    conic-gradient(from 210deg at 50% 50%, transparent 0deg, rgba(160, 255, 210, 0.07) 40deg, transparent 90deg, transparent 360deg);
-  filter: blur(30px);
-  animation: lgDrift 32s ease-in-out infinite alternate;
-}
-.lg-stage-grain {
-  position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.09; mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-@keyframes lgDrift {
-  from { transform: translate3d(-4%, -3%, 0) rotate(0deg) scale(1); }
-  to   { transform: translate3d(5%, 4%, 0) rotate(8deg) scale(1.08); }
-}
-@keyframes lgScreenIn { from { opacity: 0; transform: translateY(8px) scale(0.992); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) {
-  .lg-stage-aurora { animation: none; }
-  .lg-stage { transition: none; }
-  .lg-screen { animation: none !important; }
-}
-/* Screens: contained at their own ratio (--r), lifted off the stage by a soft green glow. */
+/* Screens are stacked in one grid cell so the outgoing and incoming slide
+   crossfade in the same position. Contained at their own ratio (--r) with a
+   shared maximum width, centred every time. One soft neutral shadow. */
 .lg-screen {
-  position: relative; z-index: 1; overflow: hidden; border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 30px 90px -18px rgba(80, 200, 145, 0.35), 0 50px 120px -30px rgba(0, 0, 0, 0.6);
-  background: #0f1312; line-height: 0; animation: lgScreenIn 0.6s cubic-bezier(.2,.7,.2,1);
+  grid-area: 1 / 1; position: relative; overflow: hidden; border-radius: 8px;
+  box-shadow: 0 18px 44px -18px rgba(0, 0, 0, 0.55);
+  background: #0f1312; line-height: 0;
 }
-.lg-stage .lg-screen { width: min(100%, calc(var(--ih) * var(--r))); aspect-ratio: var(--r); height: auto; }
+.lg-stage .lg-screen { width: min(100%, 1100px, calc(var(--ih) * var(--r))); aspect-ratio: var(--r); height: auto; }
+.lg-ctl { color: rgba(255, 255, 255, 0.8); transition: color 0.2s ease; padding: 4px 6px; margin: -4px -6px; cursor: pointer; }
+.lg-ctl:hover, .lg-ctl:focus-visible { color: #ffffff; }
 .lg-screen-mobile { border-radius: 28px; border: 6px solid #1b1f1d; }
 
 .lg-accordion { padding-top: 160px; padding-bottom: 80px; }
@@ -388,7 +359,7 @@ a:hover {
 
 @media (max-width: 1024px) {
   .lg-slideshow { height: auto; --ih: calc((100vw - 32px) * 0.8 - 32px); }
-  .lg-stage { flex: none; aspect-ratio: 5 / 4; padding: 16px; border-radius: 12px; }
+  .lg-stage { flex: none; aspect-ratio: 5 / 4; padding: 16px; border-radius: 8px; }
   .lg-accordion { padding-top: 80px; }
   .lg-row-header { position: static; }
   .lg-row-header-grid { grid-template-columns: 32px 1fr auto; row-gap: 4px; }
@@ -438,5 +409,5 @@ a:hover {
 /* Logistics header: solid so page content never shows through when sticky.
    Logo and tagline lead; the email sits on the same line, smaller and muted. */
 .lg-page .nav-desktop-header { background-color: #000000; }
-.lg-header-email { color: var(--site-fg-muted); text-decoration: none; transition: color 0.2s ease; white-space: nowrap; }
-.lg-header-email:hover { color: var(--site-fg); }
+.lg-header-email { color: rgba(255, 255, 255, 0.82); text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.35); text-underline-offset: 4px; transition: color 0.2s ease, text-decoration-color 0.2s ease; white-space: nowrap; }
+.lg-header-email:hover { color: #ffffff; text-decoration-color: #ffffff; }
