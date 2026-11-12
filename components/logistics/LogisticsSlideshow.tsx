@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { CONCEPT_NOTE, CONCEPT_TITLE, HERO_SLIDES } from './data'
+import { CONCEPT_NOTE, CONCEPT_TITLE, HERO_SLIDES, SHOW_CONCEPT_LABELS } from './data'
 
 const AUTOPLAY_MS = 6000
 
@@ -62,8 +62,8 @@ export default function LogisticsSlideshow() {
       <div className="lg-slideshow-caption">
         <span style={{ display: 'flex', gap: '16px', ...labelBase, color: 'var(--site-fg)' }}>
           <span>{CONCEPT_TITLE ?? slide.name}</span>
-          <span style={{ color: 'var(--site-fg-muted)' }}>{slide.label}</span>
-          {CONCEPT_NOTE && <span style={{ color: 'var(--site-fg-muted)', whiteSpace: 'normal' }}>{CONCEPT_NOTE}</span>}
+          {SHOW_CONCEPT_LABELS && <span style={{ color: 'var(--site-fg-muted)' }}>{slide.label}</span>}
+          {SHOW_CONCEPT_LABELS && CONCEPT_NOTE && <span style={{ color: 'var(--site-fg-muted)', whiteSpace: 'normal' }}>{CONCEPT_NOTE}</span>}
         </span>
         <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button type="button" aria-label={userPaused ? 'Play slideshow' : 'Pause slideshow'} aria-pressed={userPaused} onClick={() => setUserPaused(v => !v)} style={{ ...labelBase, color: 'var(--site-fg)', opacity: 0.5 }}>{userPaused ? 'Play' : 'Pause'}</button>

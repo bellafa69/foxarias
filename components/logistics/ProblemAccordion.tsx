@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { PROBLEM_ROWS, SHOW_PLACEHOLDER_MARKERS, type ProblemRow } from './data'
+import { PROBLEM_ROWS, SHOW_PLACEHOLDER_MARKERS, type ProblemRow, SHOW_CONCEPT_LABELS } from './data'
 
 const small: React.CSSProperties = {
   fontSize: '12px',
@@ -111,7 +111,7 @@ function Row({ row }: { row: ProblemRow }) {
               <figcaption className="lg-caption">
                 <span style={{ ...small, color: 'var(--site-fg-muted)' }}>{String(i + 1).padStart(2, '0')}</span>
                 <span style={{ ...small, flex: 1, color: 'rgba(255, 255, 255, 0.65)' }}>{img.caption}</span>
-                <span style={{ ...small, color: 'var(--site-fg-muted)', textTransform: 'uppercase' }}>{img.label}</span>
+                {SHOW_CONCEPT_LABELS && <span style={{ ...small, color: 'var(--site-fg-muted)', textTransform: 'uppercase' }}>{img.label}</span>}
               </figcaption>
             </figure>
           ))}
