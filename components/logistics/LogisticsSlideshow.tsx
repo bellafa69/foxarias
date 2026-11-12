@@ -7,9 +7,10 @@ import { CONCEPT_NOTE, CONCEPT_TITLE, HERO_SLIDES, SHOW_CONCEPT_LABELS } from '.
 const AUTOPLAY_MS = 6000
 
 const labelBase: React.CSSProperties = {
-  fontSize: '12px',
-  lineHeight: '16px',
+  fontSize: '17px',
+  lineHeight: '26px',
   fontWeight: 500,
+  letterSpacing: '0.01em',
   whiteSpace: 'nowrap',
 }
 

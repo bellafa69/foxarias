@@ -19,14 +19,16 @@ const darkTokens = {
   color: '#ffffff',
 } as React.CSSProperties
 
-const SEEN_KEY = 'lg-hero-seen'
+// Module-scoped: survives client-side navigation away from and back to this
+// page, but resets on a reload, so a reload always replays the sequence.
+let playedThisSession = false
 const HOLD_MS = 1500
 
 export default function LogisticsLanding() {
   const [heroInView, setHeroInView] = useState(true)
   // Load sequence: the slideshow fills the screen for HOLD_MS, then the intro
-  // opens above it and pushes it down. Reduced motion, repeat visits and
-  // phones go straight to the final layout. Add ?replay to see it again.
+  // opens above it and pushes it down. Reduced motion, phones and coming back
+  // to the page within the same visit go straight to the final layout.
   const [revealed, setRevealed] = useState(false)
   const [instant, setInstant] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
@@ -45,16 +47,14 @@ export default function LogisticsLanding() {
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const phone = window.matchMedia('(max-width: 1024px)').matches
-    let seen = false
-    try { seen = window.localStorage.getItem(SEEN_KEY) === '1' } catch {}
-    const replay = window.location.search.includes('replay')
-    if (reduced || phone || (seen && !replay)) {
+    if (reduced || phone || playedThisSession) {
       setInstant(true)
       setRevealed(true)
       return
     }
-    try { window.localStorage.setItem(SEEN_KEY, '1') } catch {}
-    const timeout = setTimeout(() => setRevealed(true), HOLD_MS)
+    // Flag after the hold, not before: React's dev double-run of effects would
+    // otherwise mark it played and skip the sequence.
+    const timeout = setTimeout(() => { playedThisSession = true; setRevealed(true) }, HOLD_MS)
     return () => clearTimeout(timeout)
   }, [])
 

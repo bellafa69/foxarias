@@ -16,7 +16,7 @@ export interface SiteContent {
   // Omit to drop the "What I'm up to" column entirely.
   upTo?: UpToItem[]
   // Structured intro for pages that lead with a headline (logistics page).
-  hero?: { intro: string; headline: string; offer: string; body: string; experienceLabel: string; proof: string; invitation: string }
+  hero?: { intro: string; headline: string; offer: string; body: string; proof: string; invitation: string }
 }
 
 const LINKEDIN = 'https://www.linkedin.com/in/isabella-fox-arias-20b1a0145/'
@@ -56,7 +56,6 @@ const LOGISTICS_HERO = {
   headline: 'Fleet software has to work at the desk and in the field.',
   offer: 'I work with founders and product leaders to solve complex product problems, from deciding what needs to change to designing and building the solution.',
   body: 'As products grow, decisions that made sense for one feature can create inconsistencies across the platform. Office staff develop workarounds, field users struggle with screens built for a desktop, and each new feature becomes harder to fit into the existing system.',
-  experienceLabel: 'Relevant experience',
   proof: 'I restructured Fleet Cost & Care’s 20+ year-old platform, accounting for both experienced users and people learning it for the first time.',
   invitation: 'Have a product challenge?',
 }
