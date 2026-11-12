@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import DispatchClips from './DispatchClips'
+import ClipVideo from './ClipVideo'
 import { PROBLEM_ROWS, SHOW_PLACEHOLDER_MARKERS, type ProblemRow, SHOW_CONCEPT_LABELS } from './data'
 
 const small: React.CSSProperties = {
@@ -34,7 +34,7 @@ function Row({ row }: { row: ProblemRow }) {
       figRefs.current.forEach((f, i) => {
         if (f && f.getBoundingClientRect().top <= vh * 0.55) current = i
       })
-      if (!clipRow) setStep(current)
+      setStep(current)
     }
     const onScroll = () => {
       cancelAnimationFrame(raf)
@@ -48,7 +48,7 @@ function Row({ row }: { row: ProblemRow }) {
       window.removeEventListener('resize', onScroll)
       cancelAnimationFrame(raf)
     }
-  }, [clipRow])
+  }, [])
 
   const dim = active ? 1 : 0.4
 
@@ -71,8 +71,7 @@ function Row({ row }: { row: ProblemRow }) {
         </div>
       </div>
 
-      <div className={`lg-row-body${clipRow ? ' lg-row-clips' : ''}`} style={{ opacity: dim, transition: 'opacity 0.4s ease' }}>
-        {clipRow ? <DispatchClips row={row} onStep={setStep} /> : (<>
+      <div className="lg-row-body" style={{ opacity: dim, transition: 'opacity 0.4s ease' }}>
         <div className="lg-thinking">
           <div className="lg-thinking-inner">
             {SHOW_PLACEHOLDER_MARKERS && (
@@ -90,6 +89,22 @@ function Row({ row }: { row: ProblemRow }) {
         </div>
 
         <div className="lg-figures">
+          {row.clips?.map((c, i) => (
+            <figure
+              key={c.src}
+              ref={el => { figRefs.current[i] = el }}
+              className="lg-figure lg-figure-desktop"
+              style={{ margin: 0 }}
+            >
+              <div className="lg-screen lg-clip-frame" style={{ aspectRatio: `${c.width} / ${c.height}` }}>
+                <ClipVideo src={c.src} poster={c.poster} label={c.caption} eager={i === 0} />
+              </div>
+              <figcaption className="lg-caption">
+                <span style={{ ...small, color: 'var(--site-fg-muted)' }}>{String(i + 1).padStart(2, '0')}</span>
+                <span style={{ ...small, flex: 1, color: 'rgba(255, 255, 255, 0.65)' }}>{c.caption}</span>
+              </figcaption>
+            </figure>
+          ))}
           {row.images.map((img, i) => (
             <figure
               key={img.src}
@@ -119,7 +134,6 @@ function Row({ row }: { row: ProblemRow }) {
             </figure>
           ))}
         </div>
-        </>)}
       </div>
     </section>
   )

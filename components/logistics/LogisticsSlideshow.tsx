@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { CONCEPT_NOTE, CONCEPT_TITLE, HERO_SLIDES, SHOW_CONCEPT_LABELS } from './data'
 
-// Stills hold for 5s. Clips play through once, then the show advances.
-const STILL_MS = 5000
+// Stills hold for 3.5s. Clips play through once, then the show advances.
+const STILL_MS = 3500
 
 const labelBase: React.CSSProperties = {
   fontSize: '12px',
