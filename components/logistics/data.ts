@@ -1,4 +1,4 @@
-// Content for the logistics landing page (/work/fcc).
+// Content for the logistics landing page (/logistics).
 //
 // PLACEHOLDER COPY: Isabella writes the page copy. Everything marked
 // PLACEHOLDER below (problem lines, thinking beats) is a working label so the

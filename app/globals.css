@@ -298,7 +298,7 @@ a:hover {
   }
 }
 
-/* ── Logistics landing page (/work/fcc) ─────────────────────────────────── */
+/* ── Logistics landing page (/logistics) ─────────────────────────────────── */
 .lg-slideshow {
   position: relative; display: flex; flex-direction: column;
   --sh: max(620px, calc(100svh - 300px)); --ih: calc(var(--sh) - 60px);

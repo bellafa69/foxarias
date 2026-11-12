@@ -47,7 +47,7 @@ export const HOME_CONTENT: SiteContent = {
   ],
 }
 
-// Logistics landing page (/work/fcc). Copy supplied by Isabella, 12 Nov 2026.
+// Logistics landing page (/logistics). Copy supplied by Isabella, 12 Nov 2026.
 // Reading order: who I am (intro, in the header) -> what I understand
 // (headline) -> what I take responsibility for (offer) -> why (body) ->
 // relevant experience (proof) -> next step (invitation + email).
