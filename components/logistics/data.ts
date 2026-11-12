@@ -93,12 +93,11 @@ export const PROBLEM_ROWS: ProblemRow[] = [
       { heading: 'Why', text: 'When technicians can finish reporting on site, there’s less reason to keep paper notes for someone to enter later.' },
     ],
     images: [],
-    // One flow, four beats: record a voice note, save it offline, upload it. Each plays when it scrolls into view. Captions are placeholders.
     clips: [
-      { src: `${base}/p1-voice-1-record.mp4`, poster: `${base}/p1-voice-1-record-poster.webp`, width: 2000, height: 1250, caption: 'A technician records a voice note on site.' },
-      { src: `${base}/p1-voice-2-saved.mp4`, poster: `${base}/p1-voice-2-saved-poster.webp`, width: 2000, height: 1250, caption: 'With no signal, the note is saved on the device.' },
-      { src: `${base}/p1-voice-3-upload.mp4`, poster: `${base}/p1-voice-3-upload-poster.webp`, width: 2000, height: 1250, caption: 'When signal returns, it uploads on its own.' },
-      { src: `${base}/p1-voice-4-uploaded.mp4`, poster: `${base}/p1-voice-4-uploaded-poster.webp`, width: 2000, height: 1250, caption: 'The note is uploaded and ready for the office.' },
+      { src: `${base}/p1-1-record.mp4`, poster: `${base}/p1-1-record-poster.webp`, width: 2000, height: 1250, caption: 'A technician records a voice note on site.' },
+      { src: `${base}/p1-2-done.mp4`, poster: `${base}/p1-2-done-poster.webp`, width: 2000, height: 1250, caption: 'One tap finishes it.' },
+      { src: `${base}/p1-3-upload.mp4`, poster: `${base}/p1-3-upload-poster.webp`, width: 2000, height: 1250, caption: 'One tap uploads it.' },
+      { src: `${base}/p1-4-listing.mp4`, poster: `${base}/p1-4-listing-poster.webp`, width: 2000, height: 1250, caption: 'It appears in the office listing.' },
     ],
   },
   {
@@ -111,10 +110,12 @@ export const PROBLEM_ROWS: ProblemRow[] = [
       { heading: 'Decided', text: 'Build an operations view that connects daily priorities with weekly progress and end-of-day handoffs.' },
       { heading: 'Why', text: 'Managers can act on immediate blockers and carry unfinished work into the next shift without rebuilding the picture each time.' },
     ],
-    images: [
-      { src: `${base}/p2-01-view-daily-work-queue-hr.webp`, width: 2400, height: 2070, device: 'desktop', caption: 'See fleet availability, scheduled jobs, and decisions needing attention.', label: L },
-      { src: `${base}/p2-02-generate-weekly-overview-hr.webp`, width: 2400, height: 2476, device: 'desktop', caption: 'Generate a weekly summary of progress and outstanding blockers.', label: L },
-      { src: `${base}/p2-03-read-end-of-day-wrap-hr.webp`, width: 2400, height: 2750, device: 'desktop', caption: 'Review completed work, unresolved blockers, and tomorrow’s handoff needs.', label: L },
+    images: [],
+    clips: [
+      { src: `${base}/p2-1-state.mp4`, poster: `${base}/p2-1-state-poster.webp`, width: 2000, height: 1250, caption: 'Fleet status and the morning brief at a glance.' },
+      { src: `${base}/p2-2-resolve.mp4`, poster: `${base}/p2-2-resolve-poster.webp`, width: 2000, height: 1250, caption: 'Resolve a blocker and the counts update.' },
+      { src: `${base}/p2-3-generate.mp4`, poster: `${base}/p2-3-generate-poster.webp`, width: 2000, height: 1250, caption: 'Generate a leadership overview.' },
+      { src: `${base}/p2-4-handoff.mp4`, poster: `${base}/p2-4-handoff-poster.webp`, width: 2000, height: 1250, caption: 'End-of-day handoff for tomorrow.' },
     ],
   },
   {
@@ -127,11 +128,12 @@ export const PROBLEM_ROWS: ProblemRow[] = [
       { heading: 'Decided', text: 'Treat crew, equipment, and job bookings as one connected schedule, so changes carry across every view.' },
       { heading: 'Why', text: 'Dispatchers can resolve clashes with the full picture in front of them, rather than fixing one booking and creating another conflict.' },
     ],
-    images: [
-      { src: `${base}/p3-01-move-job-with-confirmation-hr.webp`, width: 2400, height: 2025, device: 'desktop', caption: 'Move a job and update crew and equipment bookings.', label: L },
-      { src: `${base}/p3-02-resolve-equipment-conflict-hr.webp`, width: 2400, height: 1733, device: 'desktop', caption: 'Resolve an equipment conflict by assigning another available crane.', label: L },
-      { src: `${base}/p3-03-view-conflict-free-equipment-schedule-hr.webp`, width: 2400, height: 1733, device: 'desktop', caption: 'Check equipment bookings against planned maintenance and service windows.', label: L },
-      { src: `${base}/p3-04-view-conflict-free-job-schedule-hr.webp`, width: 2400, height: 1733, device: 'desktop', caption: 'Review job timing alongside assigned crew and equipment details.', label: L },
+    images: [],
+    clips: [
+      { src: `${base}/p3-1-collision.mp4`, poster: `${base}/p3-1-collision-poster.webp`, width: 2000, height: 1250, caption: 'Two bookings collide on the calendar.' },
+      { src: `${base}/p3-2-assign.mp4`, poster: `${base}/p3-2-assign-poster.webp`, width: 2000, height: 1250, caption: 'Assign another crane and the conflict clears.' },
+      { src: `${base}/p3-3-move.mp4`, poster: `${base}/p3-3-move-poster.webp`, width: 2000, height: 1250, caption: 'Move a job to another day.' },
+      { src: `${base}/p3-4-views.mp4`, poster: `${base}/p3-4-views-poster.webp`, width: 2000, height: 1250, caption: 'The change shows in every view.' },
     ],
   },
   {
@@ -144,11 +146,12 @@ export const PROBLEM_ROWS: ProblemRow[] = [
       { heading: 'Decided', text: 'Give users board and table views of the same work orders, with routine actions available in context.' },
       { heading: 'Why', text: 'Coordinators can switch between tracking progress and checking details without maintaining a separate spreadsheet or sacrificing the information they rely on.' },
     ],
-    images: [
-      { src: `${base}/p4-01-view-work-order-board-hr.webp`, width: 2400, height: 1646, device: 'desktop', caption: 'Scan work orders by stage, technician, and outstanding details.', label: L },
-      { src: `${base}/p4-02-move-work-order-to-in-progress-hr.webp`, width: 2400, height: 1646, device: 'desktop', caption: 'Move a work order directly into its next stage.', label: L },
-      { src: `${base}/p4-03-open-new-work-order-form-hr.webp`, width: 2400, height: 1647, device: 'desktop', caption: 'Add a work order without leaving the current view.', label: L },
-      { src: `${base}/p4-04-view-work-order-table-hr.webp`, width: 2400, height: 1646, device: 'desktop', caption: 'Compare equipment, assignments, status, and timing in one table.', label: L },
+    images: [],
+    clips: [
+      { src: `${base}/p4-1-board.mp4`, poster: `${base}/p4-1-board-poster.webp`, width: 2000, height: 1250, caption: 'Work orders by stage on a board.' },
+      { src: `${base}/p4-2-move.mp4`, poster: `${base}/p4-2-move-poster.webp`, width: 2000, height: 1250, caption: 'Drag a work order to its next stage.' },
+      { src: `${base}/p4-3-edit.mp4`, poster: `${base}/p4-3-edit-poster.webp`, width: 2000, height: 1250, caption: 'Reassign the technician without leaving the board.' },
+      { src: `${base}/p4-4-table.mp4`, poster: `${base}/p4-4-table-poster.webp`, width: 2000, height: 1250, caption: 'The same work orders as a table.' },
     ],
   },
 ]
