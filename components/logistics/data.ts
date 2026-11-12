@@ -66,6 +66,18 @@ export interface ProblemRow {
   // PLACEHOLDER: what she noticed, what she decided, why.
   thinking: { heading: string; text: string }[]
   images: RowImage[]
+  // Optional: one short clip per thinking beat (same order as `thinking`).
+  // When present the row uses the pinned clip stage instead of the stills.
+  clips?: RowClip[]
+}
+
+export interface RowClip {
+  src: string
+  poster: string
+  width: number
+  height: number
+  // PLACEHOLDER: Isabella rewrites these captions.
+  caption: string
 }
 
 const L: SlideLabel = 'Independent concept'
@@ -115,11 +127,11 @@ export const PROBLEM_ROWS: ProblemRow[] = [
       { heading: 'Decided', text: 'Treat crew, equipment, and job bookings as one connected schedule, so changes carry across every view.' },
       { heading: 'Why', text: 'Dispatchers can resolve clashes with the full picture in front of them, rather than fixing one booking and creating another conflict.' },
     ],
-    images: [
-      { src: `${base}/p3-01-move-job-with-confirmation-hr.webp`, width: 2400, height: 2025, device: 'desktop', caption: 'Move a job and update crew and equipment bookings.', label: L },
-      { src: `${base}/p3-02-resolve-equipment-conflict-hr.webp`, width: 2400, height: 1733, device: 'desktop', caption: 'Resolve an equipment conflict by assigning another available crane.', label: L },
-      { src: `${base}/p3-03-view-conflict-free-equipment-schedule-hr.webp`, width: 2400, height: 1733, device: 'desktop', caption: 'Check equipment bookings against planned maintenance and service windows.', label: L },
-      { src: `${base}/p3-04-view-conflict-free-job-schedule-hr.webp`, width: 2400, height: 1733, device: 'desktop', caption: 'Review job timing alongside assigned crew and equipment details.', label: L },
+    images: [],
+    clips: [
+      { src: `${base}/p3-clip-move.mp4`, poster: `${base}/p3-clip-move-poster.webp`, width: 1440, height: 810, caption: 'Move a job and update crew and equipment bookings.' },
+      { src: `${base}/p3-clip-views.mp4`, poster: `${base}/p3-clip-views-poster.webp`, width: 1440, height: 810, caption: 'See the same change in the employee, equipment, and job views.' },
+      { src: `${base}/p3-clip-resolve.mp4`, poster: `${base}/p3-clip-resolve-poster.webp`, width: 1440, height: 810, caption: 'Resolve an equipment conflict by assigning another available crane.' },
     ],
   },
   {

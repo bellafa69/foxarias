@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import DispatchClips from './DispatchClips'
 import { PROBLEM_ROWS, SHOW_PLACEHOLDER_MARKERS, type ProblemRow, SHOW_CONCEPT_LABELS } from './data'
 
 const small: React.CSSProperties = {
@@ -19,6 +20,7 @@ function Row({ row }: { row: ProblemRow }) {
   const figRefs = useRef<(HTMLElement | null)[]>([])
   const [active, setActive] = useState(false)
   const [step, setStep] = useState(0)
+  const clipRow = !!row.clips
 
   useEffect(() => {
     let raf = 0
@@ -32,7 +34,7 @@ function Row({ row }: { row: ProblemRow }) {
       figRefs.current.forEach((f, i) => {
         if (f && f.getBoundingClientRect().top <= vh * 0.55) current = i
       })
-      setStep(current)
+      if (!clipRow) setStep(current)
     }
     const onScroll = () => {
       cancelAnimationFrame(raf)
@@ -46,7 +48,7 @@ function Row({ row }: { row: ProblemRow }) {
       window.removeEventListener('resize', onScroll)
       cancelAnimationFrame(raf)
     }
-  }, [])
+  }, [clipRow])
 
   const dim = active ? 1 : 0.4
 
@@ -64,12 +66,13 @@ function Row({ row }: { row: ProblemRow }) {
           </h2>
           <span className="lg-col-tag" style={{ ...small, textTransform: 'uppercase', color: 'var(--site-fg-muted)' }}>{row.tag}</span>
           <span className="lg-col-step" style={{ ...small, color: active ? 'var(--site-fg)' : 'var(--site-fg-muted)' }}>
-            {step + 1} / {row.images.length}
+            {step + 1} / {clipRow ? row.clips!.length : row.images.length}
           </span>
         </div>
       </div>
 
-      <div className="lg-row-body" style={{ opacity: dim, transition: 'opacity 0.4s ease' }}>
+      <div className={`lg-row-body${clipRow ? ' lg-row-clips' : ''}`} style={{ opacity: dim, transition: 'opacity 0.4s ease' }}>
+        {clipRow ? <DispatchClips row={row} onStep={setStep} /> : (<>
         <div className="lg-thinking">
           <div className="lg-thinking-inner">
             {SHOW_PLACEHOLDER_MARKERS && (
@@ -116,6 +119,7 @@ function Row({ row }: { row: ProblemRow }) {
             </figure>
           ))}
         </div>
+        </>)}
       </div>
     </section>
   )

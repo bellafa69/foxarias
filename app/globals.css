@@ -353,6 +353,12 @@ a:hover {
 .lg-thinking { grid-column: 1 / 5; align-self: stretch; }
 .lg-thinking-inner { position: sticky; top: 160px; max-width: 360px; }
 .lg-figures { grid-column: 5 / 13; display: flex; flex-direction: column; gap: 96px; }
+.lg-beats { grid-column: 1 / 5; }
+.lg-beat { min-height: 62vh; max-width: 360px; padding-top: 8px; }
+.lg-beat:last-child { min-height: 40vh; }
+.lg-clipstage { grid-column: 5 / 13; align-self: stretch; }
+.lg-clipstage-inner { position: sticky; top: 140px; }
+.lg-clip-frame { display: grid; background: #1b201e; width: 100%; overflow: hidden; line-height: 0; }
 .lg-figure-mobile { align-self: flex-start; }
 .lg-screen-mobile { width: min(100%, 320px); }
 .lg-caption { display: flex; gap: 16px; align-items: baseline; padding-top: 12px; }
@@ -371,6 +377,9 @@ a:hover {
   .lg-thinking, .lg-figures { grid-column: 1 / -1; }
   .lg-thinking-inner { position: static; max-width: none; }
   .lg-figures { gap: 48px; }
+  .lg-beats { grid-column: 1 / -1; }
+  .lg-beat { min-height: 0; max-width: none; padding-bottom: 48px; }
+  .lg-beat:last-child { min-height: 0; padding-bottom: 0; }
   .lg-screen-mobile { width: min(100%, 260px); }
 }
 

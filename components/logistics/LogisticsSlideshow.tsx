@@ -4,7 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { CONCEPT_NOTE, CONCEPT_TITLE, HERO_SLIDES, SHOW_CONCEPT_LABELS } from './data'
 
-const AUTOPLAY_MS = 6000
+// Stills hold for 5s. Clips play through once, then the show advances.
+const STILL_MS = 5000
 
 const labelBase: React.CSSProperties = {
   fontSize: '12px',
@@ -20,7 +21,9 @@ const labelBase: React.CSSProperties = {
 export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boolean }) {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
-  const reducedMotion = useRef(false)
+  const [reducedMotion, setReducedMotion] = useState(false)
+  const pausedRef = useRef(false)
+  const autoplayRef = useRef(autoplay)
   const total = HERO_SLIDES.length
 
   const go = useCallback((delta: number) => {
@@ -28,16 +31,32 @@ export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boo
   }, [total])
 
   useEffect(() => {
-    reducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   }, [])
 
+  useEffect(() => { pausedRef.current = paused }, [paused])
+  useEffect(() => { autoplayRef.current = autoplay }, [autoplay])
+
+  const current = HERO_SLIDES[index]
+
+  // Timer only runs for stills; clips advance themselves when they end.
   useEffect(() => {
-    if (!autoplay || paused) return
-    const id = setInterval(() => {
-      if (!reducedMotion.current) go(1)
-    }, AUTOPLAY_MS)
-    return () => clearInterval(id)
-  }, [autoplay, paused, index, go])
+    if (!autoplay || paused || reducedMotion || current.kind === 'video') return
+    const id = setTimeout(() => go(1), STILL_MS)
+    return () => clearTimeout(id)
+  }, [autoplay, paused, reducedMotion, index, current.kind, go])
+
+  const onClipEnded = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    if (reducedMotion) return
+    if (autoplayRef.current && !pausedRef.current) {
+      go(1)
+    } else {
+      // Held (hover/focus) or not started yet: replay instead of freezing.
+      const v = e.currentTarget
+      v.currentTime = 0
+      void v.play()
+    }
+  }
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -84,10 +103,10 @@ export default function LogisticsSlideshow({ autoplay = true }: { autoplay?: boo
             <video
               src={slide.src}
               poster={slide.poster}
-              autoPlay
+              autoPlay={!reducedMotion}
               muted
-              loop
               playsInline
+              onEnded={onClipEnded}
               preload="auto"
               aria-label={slide.alt}
               style={{ width: '100%', height: '100%', display: 'block', objectFit: 'contain' }}
