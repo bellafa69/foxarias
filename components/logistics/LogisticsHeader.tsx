@@ -11,13 +11,13 @@ export default function LogisticsHeader({ content }: { content: SiteContent }) {
     <>
       <header className="nav-desktop-header">
         <div style={{ gridColumn: '1 / 10', display: 'flex', alignItems: 'baseline', gap: '20px', minWidth: 0 }}>
-          <Link href="/" style={{ fontSize: '20px', lineHeight: '28px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)', whiteSpace: 'nowrap' }}>FOX ARIAS</Link>
-          <span style={{ fontSize: '17px', lineHeight: '26px', fontWeight: 400, color: 'var(--site-fg)', whiteSpace: 'nowrap' }}>{content.tagline}</span>
+          <Link href="/" style={{ fontSize: '16px', lineHeight: '20px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)', whiteSpace: 'nowrap' }}>FOX ARIAS</Link>
+          <span style={{ fontSize: '16px', lineHeight: '20px', fontWeight: 500, color: 'var(--site-fg)', whiteSpace: 'nowrap' }}>{content.tagline}</span>
         </div>
         <a
           className="lg-header-email"
           href={`mailto:${content.email}`}
-          style={{ gridColumn: '10 / 13', justifySelf: 'end', fontSize: '17px', lineHeight: '26px', fontWeight: 400 }}
+          style={{ gridColumn: '10 / 13', justifySelf: 'end', fontSize: '16px', lineHeight: '20px', fontWeight: 500 }}
         >
           {content.email}
         </a>
@@ -27,11 +27,11 @@ export default function LogisticsHeader({ content }: { content: SiteContent }) {
         className="nav-mobile-stack"
         style={{ paddingInline: 'var(--page-padding)', paddingTop: '16px', paddingBottom: '8px', backgroundColor: 'var(--site-bg)', color: 'var(--site-fg)' }}
       >
-        <Link href="/" style={{ display: 'block', fontSize: '20px', lineHeight: '28px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)' }}>
+        <Link href="/" style={{ display: 'block', fontSize: '16px', lineHeight: '20px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--site-fg)' }}>
           FOX ARIAS
         </Link>
-        <div style={{ fontSize: '17px', lineHeight: '26px', fontWeight: 400, color: 'var(--site-fg)' }}>{content.tagline}</div>
-        <a className="lg-header-email" href={`mailto:${content.email}`} style={{ display: 'inline-block', marginTop: '4px', fontSize: '17px', lineHeight: '26px' }}>{content.email}</a>
+        <div style={{ fontSize: '16px', lineHeight: '20px', fontWeight: 500, color: 'var(--site-fg)', marginTop: '4px' }}>{content.tagline}</div>
+        <a className="lg-header-email" href={`mailto:${content.email}`} style={{ display: 'inline-block', marginTop: '4px', fontSize: '16px', lineHeight: '20px', fontWeight: 500 }}>{content.email}</a>
       </div>
     </>
   )
